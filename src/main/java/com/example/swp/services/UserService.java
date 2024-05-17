@@ -1,6 +1,7 @@
 package com.example.swp.services;
 
 import com.example.swp.components.JwtTokenUtils;
+import com.example.swp.dtos.ChangePasswordDTO;
 import com.example.swp.dtos.DataMailDTO;
 import com.example.swp.dtos.UserDTO;
 import com.example.swp.entities.Counters;
@@ -157,6 +158,20 @@ public class UserService implements IUserService{
         }
     }
 
+    @Override
+    public Users changePassword (Long id, ChangePasswordDTO changePasswordDTO) throws DataNotFoundException {
+        Users existingUser = userRepository.findById(id)
+                .orElseThrow(()->new DataNotFoundException("User not found with id"+ id));
+        if (existingUser != null) {
+            if (!changePasswordDTO.password().equals(changePasswordDTO.retypePassword())) {
+                throw new DataNotFoundException("New password and retype password do not match!!!");
+            }
+            String newPasswordEncode = passwordEncoder.encode(changePasswordDTO.password());
+            existingUser.setPassword(newPasswordEncode);
+            return userRepository.save(existingUser);
+        }
+        return null;
+    }
     @Override
     public String generateRandomPassword(int minLen, int maxLen) {
         String letters = "abcdefghijklmnopqrstuvwxyz";

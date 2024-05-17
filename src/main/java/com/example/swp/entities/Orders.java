@@ -1,5 +1,6 @@
 package com.example.swp.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -19,10 +20,15 @@ public class Orders {
 
     private Date date;
     private double discount;
+
+    @JsonProperty(value = "created_by")
+    private String createdBy;
+
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customers customer;
+
     @ManyToOne
-    @JoinColumn(name = "employee_id")
-    private Users employee;
+    @JoinColumn(name = "user_id")
+    private Users user;
 }

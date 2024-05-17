@@ -39,7 +39,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
                             .requestMatchers(
                                     String.format("%s/users/register", apiPrefix),
                                     String.format("%s/users/login", apiPrefix),
-
+                                    String.format("%s/users/update_password/**", apiPrefix),
                                     "/api-docs",
                                     "/api-docs/**",
                                     "/swagger-resources",

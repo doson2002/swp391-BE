@@ -22,14 +22,20 @@ public class Products {
     private String barcode;
     @JsonProperty(value = "quantity")
     private Long quantity;
-    @JsonProperty(value = "cost")
-    private double cost;
+    @JsonProperty(value = "price_processing")
+    private double priceProcessing;
+    @JsonProperty(value = "price_stone")
+    private double priceStone;
     @JsonProperty(value = "weight")
     private double weight;
     @JsonProperty(value = "description")
     private String description;
     @JsonProperty(value = "type")
-    private String type;
+    private boolean status;
+
+    @ManyToOne
+    @JoinColumn(name = "type_id")
+    private TypePrices type;
 
     @ManyToOne
     @JoinColumn(name = "counter_id")

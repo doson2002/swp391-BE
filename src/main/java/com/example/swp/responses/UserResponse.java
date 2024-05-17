@@ -33,7 +33,6 @@ public class UserResponse extends BaseResponse{
                 .fullName(user.getFullName())
                 .email(user.getEmail())
                 .phoneNumber(user.getPhoneNumber())
-                .address(user.getAddress())
                 .dateOfBirth(user.getDateOfBirth())
                 .active(user.isActive())
                 .role(user.getRole().getName())

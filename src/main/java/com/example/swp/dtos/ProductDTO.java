@@ -15,14 +15,16 @@ public class ProductDTO {
     private String barcode;
     @JsonProperty(value = "quantity")
     private Long quantity;
-    @JsonProperty(value = "cost")
-    private double cost;
+    @JsonProperty(value = "price_processing")
+    private double priceProcessing;
+    @JsonProperty(value = "price_stone")
+    private double priceStone;
     @JsonProperty(value = "weight")
     private double weight;
     @JsonProperty(value = "description")
     private String description;
-    @JsonProperty(value = "type")
-    private String type;
+    @JsonProperty(value = "type_id")
+    private Long typeId;
     @JsonProperty(value = "counter_id")
     private Long counterId;
 }
