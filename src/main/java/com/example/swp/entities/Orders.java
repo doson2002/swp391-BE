@@ -13,7 +13,7 @@ import java.util.Date;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Orders {
+public class Orders extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -28,7 +28,4 @@ public class Orders {
     @JoinColumn(name = "customer_id")
     private Customers customer;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private Users user;
 }

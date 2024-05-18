@@ -2,7 +2,7 @@ package com.example.swp.controllers;
 
 
 import com.example.swp.dtos.CustomersDTO;
-import com.example.swp.services.CustomerService;
+import com.example.swp.services.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,10 +14,10 @@ import java.util.List;
 @RequestMapping("/api/v1/customer")
 public class CustomerController {
 
-    private final CustomerService customerService;
+    private final ICustomerService customerService;
 
     @Autowired
-    public CustomerController(CustomerService customerService){
+    public CustomerController(ICustomerService customerService){
         this.customerService = customerService;
     }
 
