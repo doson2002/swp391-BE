@@ -3,20 +3,18 @@ package com.example.swp.services;
 import com.example.swp.dtos.CustomersDTO;
 import com.example.swp.entities.Customers;
 import com.example.swp.repositories.CustomerRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
+@Service
 public class CustomerService implements ICustomerService {
 
     private final CustomerRepository customerRepository;
-
-    @Autowired
-    public CustomerService(CustomerRepository customerRepository){
-        this.customerRepository = customerRepository;
-    }
 
 
     @Override

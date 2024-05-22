@@ -14,4 +14,6 @@ public interface IProductService {
     void blockOrEnable(Long id, Boolean active) throws DataNotFoundException;
 
     Page<ProductResponse> getAllProducts(String keyword, PageRequest pageRequest);
+
+    Products getProduct(Long id) throws DataNotFoundException;
 }

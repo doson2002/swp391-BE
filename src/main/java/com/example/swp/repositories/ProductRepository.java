@@ -6,7 +6,9 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface ProductRepository extends JpaRepository<Products,Long> {
     @Query("SELECT p FROM Products p WHERE " +
             "(:keyword IS NULL OR :keyword = '' OR p.productName ILIKE %:keyword%)")
