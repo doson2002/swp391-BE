@@ -21,6 +21,8 @@ public class UserResponse extends BaseResponse{
     private String dateOfBirth;
     @JsonProperty("active")
     private boolean active;
+    @JsonProperty("first_login")
+    private Boolean firstLogin;
     @JsonProperty("role_id")
     private String role;
     @JsonProperty("counter_id")
@@ -34,6 +36,7 @@ public class UserResponse extends BaseResponse{
                 .phoneNumber(user.getPhoneNumber())
                 .dateOfBirth(user.getDateOfBirth())
                 .active(user.isActive())
+                .firstLogin(user.getFirstLogin())
                 .role(user.getRole().getName())
                 .counter(user.getCounter() != null ? user.getCounter().getLocation() : null)
                 .build();

@@ -72,6 +72,7 @@ public class UserController {
                     .refreshToken(jwtToken.getRefreshToken())
                     .name(userDetail.getFullName())
                     .email(userDetail.getUsername())
+                            .firstLogin(userDetail.getFirstLogin())
                     .roles(userDetail.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList())
                     .id(userDetail.getId())
                     .build());
