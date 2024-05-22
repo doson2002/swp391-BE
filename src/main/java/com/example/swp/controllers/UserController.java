@@ -131,6 +131,11 @@ public class UserController {
                 .totalPages(totalPages)
                 .build());
     }
+    @GetMapping("/get_user_by_id/{id}")
+    public ResponseEntity<?> getUserById(@Valid @PathVariable Long id) throws DataNotFoundException {
+        Users user =userService.getUser(id);
+        return ResponseEntity.ok(UserResponse.fromUser(user));
+    }
 
     @DeleteMapping("/delete_user/{userId}")
     public ResponseEntity<String> deleteUser(@PathVariable long userId) {

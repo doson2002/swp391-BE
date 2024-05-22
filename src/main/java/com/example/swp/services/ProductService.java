@@ -74,6 +74,9 @@ public class ProductService implements IProductService{
         Page<Products> productPage = productRepository.searchProducts(keyword, pageRequest);
         return productPage.map(ProductResponse::fromProducts);
     }
+    public Products getProduct(Long id) throws DataNotFoundException {
+        return productRepository.findById(id).orElseThrow(()->new DataNotFoundException("Product not found with id:" + id));
+    }
 
 
 }

@@ -75,6 +75,7 @@ public class UserService implements IUserService{
                 .phoneNumber(userDTO.getPhoneNumber())
                 .dateOfBirth(userDTO.getDateOfBirth())
                 .active(true)
+                .firstLogin(true)
                 .role(role)
                 .counter(counter)
                 .build();
@@ -113,6 +114,9 @@ public class UserService implements IUserService{
         return usersPage.map(UserResponse::fromUser);
     }
 
+    public Users getUser(Long id) throws DataNotFoundException {
+        return userRepository.findById(id).orElseThrow(()->new DataNotFoundException("User not found"));
+    }
 
     public Users deleteSyllabus(long userId) throws DataNotFoundException {
         Optional<Users> optionalUser = userRepository.findById(userId);
@@ -168,6 +172,7 @@ public class UserService implements IUserService{
             }
             String newPasswordEncode = passwordEncoder.encode(changePasswordDTO.password());
             existingUser.setPassword(newPasswordEncode);
+            existingUser.setFirstLogin(false);
             return userRepository.save(existingUser);
         }
         return null;

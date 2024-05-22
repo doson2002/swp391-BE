@@ -69,7 +69,7 @@ public class ProductController {
     }
     @GetMapping("/get_all_products")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER')")
-    public ResponseEntity<ProductListResponse> getProducts(
+    public ResponseEntity<ProductListResponse> getAllProducts(
             @RequestParam(defaultValue = "")String keyword,
             @RequestParam("page") int page, @RequestParam("limit")int limit){
         PageRequest pageRequest = PageRequest.of(page, limit, Sort.by("productName").ascending());
@@ -80,6 +80,12 @@ public class ProductController {
                 .products(productResponseList)
                 .totalPages(totalPages)
                 .build());
+    }
+    @GetMapping("/get_product_by_id/{productId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER')")
+    public ResponseEntity<?> getProduct(@Valid @PathVariable Long productId) throws DataNotFoundException {
+        Products product = productService.getProduct(productId);
+        return ResponseEntity.ok(ProductResponse.fromProducts(product));
     }
 
 }

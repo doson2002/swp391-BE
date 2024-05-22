@@ -13,6 +13,8 @@ public interface IUserService {
 
     Page<UserResponse> getAllUsers(String keyword, PageRequest pageRequest);
 
+    Users getUser(Long id) throws DataNotFoundException;
+
     Users deleteSyllabus(long userId) throws DataNotFoundException;
 
     String login(String userAccount, String password,Long roleId) throws Exception;
