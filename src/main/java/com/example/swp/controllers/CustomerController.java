@@ -7,12 +7,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/customer")
+@RequestMapping("/api/v1/customers")
 @RequiredArgsConstructor
 public class CustomerController {
 
@@ -21,6 +22,7 @@ public class CustomerController {
 
 
     @PostMapping("/add")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF','ROLE_MANAGER')")
     public ResponseEntity<CustomersDTO> addCustomer(@RequestBody CustomersDTO customerDTO) {
         CustomersDTO addedCustomer = customerService.addCustomer(customerDTO);
         return new ResponseEntity<>(addedCustomer, HttpStatus.CREATED);

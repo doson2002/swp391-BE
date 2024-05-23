@@ -65,7 +65,7 @@ public class CustomerService implements ICustomerService {
     }
 
     private CustomersDTO maptoDto(Customers customers){
-        return new CustomersDTO(customers.getId(), customers.getFullName(), customers.getEmail(),
-                customers.getPhone(), customers.getAddress());
+        return new CustomersDTO(customers.getFullName(), customers.getEmail(),
+                customers.getPhone(), customers.getAddress(),customers.getAccumulated_point());
     }
 }
