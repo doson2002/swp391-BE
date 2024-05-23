@@ -44,6 +44,9 @@ public class Users extends BaseEntity implements UserDetails {
     @Column(name = "date_of_birth")
     private String dateOfBirth;
 
+    @Column(name = "first_login")
+    private Boolean firstLogin;
+
     @ManyToOne
     @JoinColumn(name = "counter_id", nullable = true)
     private Counters counter;

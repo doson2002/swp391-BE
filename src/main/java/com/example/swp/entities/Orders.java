@@ -1,5 +1,6 @@
 package com.example.swp.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,17 +13,19 @@ import java.util.Date;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class Orders {
+public class Orders extends BaseEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     private Date date;
     private double discount;
+
+    @JsonProperty(value = "created_by")
+    private String createdBy;
+
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customers customer;
-    @ManyToOne
-    @JoinColumn(name = "employee_id")
-    private Users employee;
+
 }

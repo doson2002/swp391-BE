@@ -1,33 +1,25 @@
-package com.example.swp.entities;
+package com.example.swp.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
 
-@Entity
+@Data
 @Builder
-@Table(name = "type_price")
-@Setter
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class TypePrices {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+public class TypePriceDTO {
 
-    @JsonProperty(value = "date")
     private Date date;
-
     @JsonProperty(value = "buy_price_per_gram")
     private double buyPricePerGram;
 
     @JsonProperty(value = "sell_price_per_gram")
     private double sellPricePerGram;
 
-    @JsonProperty(value = "type")
-    private String type;
-
+    @JsonProperty(value = "type_id")
+    private Long typeId;
 }

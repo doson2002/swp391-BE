@@ -17,7 +17,6 @@ public class UserResponse extends BaseResponse{
     private String email;
     @JsonProperty("phone_number")
     private String phoneNumber;
-    private String address;
     @JsonProperty("date_of_birth")
     private String dateOfBirth;
     @JsonProperty("active")
@@ -33,11 +32,10 @@ public class UserResponse extends BaseResponse{
                 .fullName(user.getFullName())
                 .email(user.getEmail())
                 .phoneNumber(user.getPhoneNumber())
-//                .address(user.getAddress())
                 .dateOfBirth(user.getDateOfBirth())
                 .active(user.isActive())
                 .role(user.getRole().getName())
-                .counter(user.getCounter().getLocation())
+                .counter(user.getCounter() != null ? user.getCounter().getLocation() : null)
                 .build();
         userResponse.setCreatedDate(user.getCreatedDate());
         userResponse.setModifiedDate(user.getModifiedDate());

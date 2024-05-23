@@ -1,5 +1,6 @@
 package com.example.swp.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -16,4 +17,7 @@ public class Counters {
     private Long id;
 
     private String location;
+
+    @JsonProperty(value = "counter_name")
+    private String counterName;
 }

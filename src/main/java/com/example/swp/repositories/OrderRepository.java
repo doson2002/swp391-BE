@@ -1,10 +1,9 @@
 package com.example.swp.repositories;
 
-import com.example.swp.entities.Counters;
+import com.example.swp.entities.Orders;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CounterRepository extends JpaRepository<Counters, Long> {
-
+public interface OrderRepository extends JpaRepository<Orders, Long> {
 }

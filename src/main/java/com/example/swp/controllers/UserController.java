@@ -1,6 +1,7 @@
 package com.example.swp.controllers;
 
 import com.example.swp.components.JwtTokenUtils;
+import com.example.swp.dtos.ChangePasswordDTO;
 import com.example.swp.dtos.UserDTO;
 import com.example.swp.dtos.UserLoginDTO;
 import com.example.swp.entities.Token;
@@ -20,7 +21,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
@@ -80,6 +83,7 @@ public class UserController {
     }
 
     @PostMapping("/register")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> createUser(@Valid @RequestBody UserDTO userDTO,
                                          BindingResult result) {
         RegisterResponse registerResponse = new RegisterResponse();
@@ -102,6 +106,18 @@ public class UserController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+    @Transactional
+    @PutMapping("/update_password/{id}")
+    public ResponseEntity<?> updatePassword(@PathVariable long id, @RequestBody ChangePasswordDTO changePasswordDTO) {
+        try {
+            Users changePassword = userService.changePassword(id, changePasswordDTO);
+            return ResponseEntity.ok("Update password successfully!!");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+
     @GetMapping("/get_all_users")
         public ResponseEntity<UserListResponse> getUsers(
             @RequestParam(defaultValue = "") String keyword,
@@ -114,6 +130,11 @@ public class UserController {
                 .users(users)
                 .totalPages(totalPages)
                 .build());
+    }
+    @GetMapping("/get_user_by_id/{id}")
+    public ResponseEntity<?> getUserById(@Valid @PathVariable Long id) throws DataNotFoundException {
+        Users user =userService.getUser(id);
+        return ResponseEntity.ok(UserResponse.fromUser(user));
     }
 
     @DeleteMapping("/delete_user/{userId}")

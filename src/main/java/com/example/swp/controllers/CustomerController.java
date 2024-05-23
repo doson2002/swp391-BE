@@ -2,26 +2,21 @@ package com.example.swp.controllers;
 
 
 import com.example.swp.dtos.CustomersDTO;
-import com.example.swp.services.CustomerService;
+import com.example.swp.services.ICustomerService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/customer")
+@RequiredArgsConstructor
 public class CustomerController {
 
-    private final CustomerService customerService;
+    private final ICustomerService customerService;
 
-    @Autowired
-    public CustomerController(CustomerService customerService){
-        this.customerService = customerService;
-    }
 
 
     @PostMapping("/add")

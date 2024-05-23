@@ -1,5 +1,6 @@
 package com.example.swp.services;
 
+import com.example.swp.dtos.ChangePasswordDTO;
 import com.example.swp.dtos.UserDTO;
 import com.example.swp.entities.Users;
 import com.example.swp.exceptions.DataNotFoundException;
@@ -12,11 +13,15 @@ public interface IUserService {
 
     Page<UserResponse> getAllUsers(String keyword, PageRequest pageRequest);
 
+    Users getUser(Long id) throws DataNotFoundException;
+
     Users deleteSyllabus(long userId) throws DataNotFoundException;
 
     String login(String userAccount, String password,Long roleId) throws Exception;
 
     Boolean create(String name, String email, String password);
+
+    Users changePassword (Long id, ChangePasswordDTO changePasswordDTO) throws DataNotFoundException;
     String generateRandomPassword(int minLen, int maxLen);
 
     Users getUserDetailsFromToken(String token) throws Exception;
