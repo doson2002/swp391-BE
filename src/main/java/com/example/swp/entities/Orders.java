@@ -28,4 +28,8 @@ public class Orders extends BaseEntity{
     @JoinColumn(name = "customer_id")
     private Customers customer;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Users user;
+
 }
