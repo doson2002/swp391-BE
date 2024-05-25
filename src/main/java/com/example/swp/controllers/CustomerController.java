@@ -17,8 +17,6 @@ public class CustomerController {
 
     private final ICustomerService customerService;
 
-
-
     @PostMapping("/add")
     public ResponseEntity<CustomersDTO> addCustomer(@RequestBody CustomersDTO customerDTO) {
         CustomersDTO addedCustomer = customerService.addCustomer(customerDTO);
