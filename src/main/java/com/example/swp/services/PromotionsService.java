@@ -24,6 +24,7 @@ public class PromotionsService implements IPromotionsService{
         Promotions promotions = Promotions.builder()
                 .code(code)
                 .discountPercentage(promotionsDTO.getDiscountPercentage())
+                .fixedDiscountAmount(promotionsDTO.getFixedDiscountAmount())
                 .startDate(promotionsDTO.getStartDate())
                 .endDate(promotionsDTO.getEndDate())
                 .build();

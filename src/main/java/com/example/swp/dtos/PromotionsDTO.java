@@ -11,6 +11,8 @@ import lombok.NoArgsConstructor;
 public class PromotionsDTO {
     @JsonProperty("discount_percentage")
     private double discountPercentage;
+    @JsonProperty(value = "fixed_discount_amount")
+    private Long fixedDiscountAmount;
     @JsonProperty("start_date")
     private Long startDate;
     @JsonProperty("end_date")
