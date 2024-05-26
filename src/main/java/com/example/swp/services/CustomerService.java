@@ -2,6 +2,7 @@ package com.example.swp.services;
 
 import com.example.swp.dtos.CustomersDTO;
 import com.example.swp.entities.Customers;
+import com.example.swp.exceptions.DataNotFoundException;
 import com.example.swp.repositories.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,7 +17,6 @@ public class CustomerService implements ICustomerService {
 
     private final CustomerRepository customerRepository;
 
-
     @Override
     public CustomersDTO addCustomer(CustomersDTO customersDTO) {
         Customers customers = new Customers();
@@ -25,21 +25,20 @@ public class CustomerService implements ICustomerService {
         customers.setPhone(customersDTO.getPhone());
         customers.setAddress(customersDTO.getAddress());
 
-        Customers saveCustomer = customerRepository.save(customers);
-
-        return maptoDto(saveCustomer);
+        Customers savedCustomer = customerRepository.save(customers);
+        return mapToDto(savedCustomer);
     }
 
     @Override
     public List<CustomersDTO> searchCustomers(String keyword) {
         List<Customers> customers = customerRepository.findByFullNameContainingIgnoreCase(keyword);
         return customers.stream()
-                .map(this::maptoDto)
+                .map(this::mapToDto)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public CustomersDTO updateCustomer(Long id, CustomersDTO customerDTO) {
+    public CustomersDTO updateCustomer(Long id, CustomersDTO customerDTO) throws DataNotFoundException {
         Optional<Customers> optionalCustomer = customerRepository.findById(id);
         if (optionalCustomer.isPresent()) {
             Customers existingCustomer = optionalCustomer.get();
@@ -48,23 +47,23 @@ public class CustomerService implements ICustomerService {
             existingCustomer.setPhone(customerDTO.getPhone());
             existingCustomer.setAddress(customerDTO.getAddress());
             Customers updatedCustomer = customerRepository.save(existingCustomer);
-            return maptoDto(updatedCustomer);
+            return mapToDto(updatedCustomer);
         } else {
-            throw new RuntimeException("Customer not found with id: " + id);
+            throw new DataNotFoundException("Customer not found with id: " + id);
         }
     }
 
     @Override
-    public void deleteCustomer(Long id) {
+    public void deleteCustomer(Long id) throws DataNotFoundException  {
         Optional<Customers> optionalCustomer = customerRepository.findById(id);
         if (optionalCustomer.isPresent()) {
             customerRepository.deleteById(id);
         } else {
-            throw new RuntimeException("Customer not found with id: " + id);
+            throw new DataNotFoundException("Customer not found with id: " + id);
         }
     }
 
-    private CustomersDTO maptoDto(Customers customers){
+    private CustomersDTO mapToDto(Customers customers) {
         return new CustomersDTO(customers.getId(), customers.getFullName(), customers.getEmail(),
                 customers.getPhone(), customers.getAddress());
     }
