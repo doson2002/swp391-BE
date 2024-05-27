@@ -15,7 +15,7 @@ public interface IUserService {
 
     Users getUser(Long id) throws DataNotFoundException;
 
-    Users deleteSyllabus(long userId) throws DataNotFoundException;
+    void deleteUser(Long userId);
 
     String login(String userAccount, String password,Long roleId) throws Exception;
 
@@ -25,4 +25,5 @@ public interface IUserService {
     String generateRandomPassword(int minLen, int maxLen);
 
     Users getUserDetailsFromToken(String token) throws Exception;
+    void blockOrEnable(Long userId, Boolean active) throws DataNotFoundException;
 }
