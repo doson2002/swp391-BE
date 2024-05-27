@@ -139,6 +139,16 @@ public class UserController {
         return ResponseEntity.ok(UserResponse.fromUser(user));
     }
 
+    @PutMapping("/update/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    public ResponseEntity<?> updateUser(@PathVariable long id, @RequestBody UserDTO userDTO) {
+        try {
+            Users updateUser = userService.updateUser(id, userDTO);
+            return ResponseEntity.ok((updateUser));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
     @DeleteMapping("/delete_user/{userId}")
     public ResponseEntity<String> deleteUser(@PathVariable Long userId) {
         userService.deleteUser(userId);

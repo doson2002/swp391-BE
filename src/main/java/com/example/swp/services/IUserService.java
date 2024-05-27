@@ -26,4 +26,6 @@ public interface IUserService {
 
     Users getUserDetailsFromToken(String token) throws Exception;
     void blockOrEnable(Long userId, Boolean active) throws DataNotFoundException;
+
+    Users updateUser(long id, UserDTO userDTO) throws Exception;
 }
