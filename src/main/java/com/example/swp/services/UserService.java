@@ -4,16 +4,11 @@ import com.example.swp.components.JwtTokenUtils;
 import com.example.swp.dtos.ChangePasswordDTO;
 import com.example.swp.dtos.DataMailDTO;
 import com.example.swp.dtos.UserDTO;
-import com.example.swp.entities.Counters;
-import com.example.swp.entities.Users;
-import com.example.swp.entities.Role;
+import com.example.swp.entities.*;
 import com.example.swp.exceptions.DataNotFoundException;
-import com.example.swp.repositories.CounterRepository;
-import com.example.swp.repositories.RoleRepository;
-import com.example.swp.repositories.UserRepository;
+import com.example.swp.repositories.*;
 import com.example.swp.responses.UserResponse;
 import com.example.swp.services.sendmails.IMailService;
-import com.example.swp.services.sendmails.MailService;
 import com.example.swp.utils.Const;
 import jakarta.mail.MessagingException;
 import lombok.RequiredArgsConstructor;
@@ -22,13 +17,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import java.security.SecureRandom;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -42,6 +36,9 @@ public class UserService implements IUserService{
     private final AuthenticationManager authenticationManager;
     private final IMailService mailService;
     private final CounterRepository counterRepository;
+    private final TokenRepository tokenRepository;
+    private final OrderRepository orderRepository;
+    private final OrderDetailRepository orderDetailRepository;
     @Override
     @Transactional
     public Users createUser(UserDTO userDTO) throws Exception {
@@ -118,16 +115,26 @@ public class UserService implements IUserService{
         return userRepository.findById(id).orElseThrow(()->new DataNotFoundException("User not found"));
     }
 
-    public Users deleteSyllabus(long userId) throws DataNotFoundException {
+    @Override
+    @Transactional
+    public void deleteUser(Long userId) {
         Optional<Users> optionalUser = userRepository.findById(userId);
-        if (optionalUser.isPresent()) {
-            Users user = optionalUser.get();
-            userRepository.delete(user);
-        } else {
-            throw new DataNotFoundException("Users not found.");
-        }
-        return null;
+        List<Token> tokens = tokenRepository.findByUser_Id(userId);
+        List<Orders> orders = orderRepository.findByUser_Id(userId);
+        orderDetailRepository.deleteByOrderIn(orders);
+        tokenRepository.deleteAll(tokens);
+        orderRepository.deleteAll(orders);
+        optionalUser.ifPresent(userRepository::delete);
     }
+    @Override
+    @Transactional
+    public void blockOrEnable(Long userId, Boolean active) throws DataNotFoundException {
+        Users existingUser = userRepository.findById(userId)
+                .orElseThrow(() -> new DataNotFoundException("User not found"));
+        existingUser.setActive(active);
+        userRepository.save(existingUser);
+    }
+
 
     public String login(String email, String password, Long roleId) throws Exception {
         Optional<Users> optionalUser = userRepository.findByEmail(email);
@@ -139,6 +146,9 @@ public class UserService implements IUserService{
         if (!passwordEncoder.matches(password, existingUser.getPassword())) {
             throw new DataNotFoundException("INVALID EMAIL OR PASSWORD");
 
+        }
+        if (!optionalUser.get().isActive()) {
+            throw new DataNotFoundException("YOUR ACCOUNT HAS BEEN BLOCKED");
         }
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 email, password,

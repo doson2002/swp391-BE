@@ -13,6 +13,7 @@ import com.example.swp.responses.UserListResponse;
 import com.example.swp.responses.UserResponse;
 import com.example.swp.services.ITokenService;
 import com.example.swp.services.IUserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -139,12 +140,24 @@ public class UserController {
     }
 
     @DeleteMapping("/delete_user/{userId}")
-    public ResponseEntity<String> deleteUser(@PathVariable long userId) {
+    public ResponseEntity<String> deleteUser(@PathVariable Long userId) {
+        userService.deleteUser(userId);
+        return new ResponseEntity<>("Users deleted successfully", HttpStatus.OK);
+    }
+    @PutMapping("/block/{userId}/{active}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<String> blockOrEnable(
+            @Valid @PathVariable long userId,
+            @Valid @PathVariable int active
+    ) {
         try {
-            userService.deleteSyllabus(userId);
-            return new ResponseEntity<>("Users deleted successfully", HttpStatus.OK);
+            userService.blockOrEnable(userId, active > 0);
+            String message = active > 0 ? "Successfully enabled the user." : "Successfully blocked the user.";
+            return ResponseEntity.ok().body(message);
         } catch (DataNotFoundException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            return ResponseEntity.badRequest().body("User not found.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 
