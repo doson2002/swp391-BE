@@ -68,6 +68,9 @@ public class OrderService implements IOrderService{
 
         return order;
     }
+    public List<Orders> getAllOrders(){
+        return orderRepository.findAll();
+    }
 
 
 }

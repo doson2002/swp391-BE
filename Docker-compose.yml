@@ -2,6 +2,7 @@ version: "3.8"
 
 services:
   db:
+    container_name: db_container
     image: postgres:latest
     restart: always
     ports:
@@ -9,14 +10,15 @@ services:
     environment:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=12345
-      - POSTGRES_DB=swp
+      - POSTGRES_DB=SWP
     volumes:
       - db:/var/lib/postgresql/data
     networks:
       - my-network
 
   app:
-
+    container_name: swp391-api-container
+    image: swp391/swp391-be
     depends_on:
       - db
     build:
@@ -25,15 +27,18 @@ services:
     ports:
       - 8080:8080
     environment:
-      SPRING_APPLICATION_JSON: '{
-        "spring.datasource.url"  : "jdbc:postgresql://localhost:5432/swp",
-        "spring.datasource.username" : "postgres",
-        "spring.datasource.password" : "12345",
-        "spring.datasource.driver-class-name" : "org.postgresql.Driver",
-        "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.PostgreSQLDialect",
-        "spring.jpa.hibernate.ddl-auto" : "update",
-        "spring.autoconfigure.exclude" : "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration"
-      }'
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/SWP?serverTimezone=UTC&allowPublicKeyRetrieval=true
+      PGADMIN_USER: postgres
+      PGADMIN_PASSWORD: 12345
+#      SPRING_APPLICATION_JSON: '{
+#        "spring.datasource.url"  : "jdbc:postgresql://db:5432/swp391",
+#        "spring.datasource.username" : "postgres",
+#        "spring.datasource.password" : "12345",
+#        "spring.datasource.driver-class-name" : "org.postgresql.Driver",
+#        "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.PostgreSQLDialect",
+#        "spring.jpa.hibernate.ddl-auto" : "update",
+#        "spring.autoconfigure.exclude" : "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration"
+#      }'
     #    volumes:
     #      - .m2:/root/.m2
     #    stdin_open: true
