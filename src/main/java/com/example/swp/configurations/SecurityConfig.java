@@ -2,6 +2,10 @@ package com.example.swp.configurations;
 
 import com.example.swp.repositories.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -14,9 +18,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration
-@RequiredArgsConstructor
 public class SecurityConfig {
+
     private final UserRepository userRepository;
+    Logger logger = LogManager.getLogger(SecurityConfig.class);
+    @Autowired
+    public SecurityConfig(UserRepository userRepository) {
+        this.userRepository = userRepository;
+        logger.info("UserRepository bean initialized");
+    }
     //user's detail object
     @Bean
     public UserDetailsService userDetailsService() {

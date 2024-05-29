@@ -10,4 +10,5 @@ import java.util.List;
 public interface IOrderService {
     Orders createOrder(Long customerId, Long userId, List<OrderRequestDTO> orderRequests,
                        OrderDTO orderDTO) throws DataNotFoundException;
+    List<Orders> getAllOrders();
 }

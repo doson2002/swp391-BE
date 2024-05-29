@@ -6,7 +6,10 @@ import com.example.swp.dtos.ProductDTO;
 import com.example.swp.entities.Orders;
 import com.example.swp.entities.Products;
 import com.example.swp.exceptions.DataNotFoundException;
+import com.example.swp.responses.OrderListResponse;
 import com.example.swp.responses.OrderResponse;
+import com.example.swp.responses.ProductListResponse;
+import com.example.swp.responses.ProductResponse;
 import com.example.swp.services.IOrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -15,10 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -74,6 +74,18 @@ public ResponseEntity<?> createOrder(@Valid @RequestBody OrderRequestDetailDTO r
         return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 }
+
+    @GetMapping("/get_all_orders")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF')")
+    public ResponseEntity<OrderListResponse> getAllOrders() {
+
+      List<Orders> orders = orderService.getAllOrders();
+        return ResponseEntity.ok(OrderListResponse.builder()
+                .orders(orders)
+                .build());
+    }
+
+
 
 
 }
