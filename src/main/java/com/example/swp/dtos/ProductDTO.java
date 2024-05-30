@@ -23,6 +23,8 @@ public class ProductDTO {
     private double weight;
     @JsonProperty(value = "description")
     private String description;
+    @JsonProperty(value = "image_url")
+    private String imageUrl;
     @JsonProperty(value = "type_id")
     private Long typeId;
     @JsonProperty(value = "counter_id")

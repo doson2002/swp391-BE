@@ -20,6 +20,6 @@ public class Customers {
     private String email;
     private String phone;
     private String address;
-    private Long accumulated_point;
+    private double accumulated_point;
 
 }

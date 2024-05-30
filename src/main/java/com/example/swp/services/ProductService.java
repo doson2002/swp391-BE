@@ -35,6 +35,7 @@ public class ProductService implements IProductService{
                 .weight(productDTO.getWeight())
                 .quantity(productDTO.getQuantity())
                 .description(productDTO.getDescription())
+                .imageUrl(productDTO.getImageUrl())
                 .type(existingType)
                 .counter(existingCounter)
                 .build();
@@ -59,6 +60,7 @@ public class ProductService implements IProductService{
             existingProduct.setWeight(productDTO.getWeight());
             existingProduct.setQuantity(productDTO.getQuantity());
             existingProduct.setDescription(productDTO.getDescription());
+            existingProduct.setImageUrl(productDTO.getImageUrl());
             existingProduct.setCounter(existingCounter);
             return productRepository.save(existingProduct);
         }

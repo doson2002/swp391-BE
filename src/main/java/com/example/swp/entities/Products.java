@@ -36,6 +36,9 @@ public class Products {
     @JsonProperty(value = "price_rate")
     private double priceRate;  //tỉ lệ áp giá
 
+    @JsonProperty(value = "image_url")
+    private String imageUrl;
+
     @ManyToOne
     @JoinColumn(name = "type_id")
     private TypePrices type;

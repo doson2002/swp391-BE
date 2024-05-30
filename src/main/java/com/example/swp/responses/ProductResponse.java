@@ -29,8 +29,11 @@ public class ProductResponse {
     private String description;
     @JsonProperty(value = "type")
     private TypePrices type;
+    @JsonProperty(value = "image_url")
+    private String imageUrl;
     @JsonProperty(value = "counter_id")
     private Counters counter;
+
 
     public static ProductResponse fromProducts(Products products) {
         ProductResponse productResponse = ProductResponse.builder()
@@ -42,6 +45,7 @@ public class ProductResponse {
                 .priceStone(products.getPriceStone())
                 .weight(products.getWeight())
                 .description(products.getDescription())
+                .imageUrl(products.getImageUrl())
                 .type(products.getType())
                 .counter(products.getCounter())
                 .build();

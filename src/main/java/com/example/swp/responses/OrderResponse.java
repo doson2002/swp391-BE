@@ -19,6 +19,7 @@ public class OrderResponse {
     private double discount;
     @JsonProperty(value = "created_by")
     private String createdBy;
+    private String type;
     @JsonProperty(value = "customer_id")
     private Long customerId;
     @JsonProperty(value = "user_id")
@@ -29,6 +30,7 @@ public class OrderResponse {
                 .id(orders.getId())
                 .createdBy(orders.getCreatedBy())
                 .discount(orders.getDiscount())
+                .type(orders.getType())
                 .date(orders.getDate())
                 .customerId(orders.getCustomer().getId())
                 .userId(orders.getUser().getId())
