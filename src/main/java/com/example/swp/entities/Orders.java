@@ -23,6 +23,7 @@ public class Orders extends BaseEntity{
 
     @JsonProperty(value = "created_by")
     private String createdBy;
+    private String type;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")

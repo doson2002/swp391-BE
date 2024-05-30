@@ -24,6 +24,7 @@ public class CustomerService implements ICustomerService {
         customers.setEmail(customersDTO.getEmail());
         customers.setPhone(customersDTO.getPhone());
         customers.setAddress(customersDTO.getAddress());
+        customers.setAccumulated_point(customersDTO.getAccumulatedPoint());
 
         Customers saveCustomer = customerRepository.save(customers);
 

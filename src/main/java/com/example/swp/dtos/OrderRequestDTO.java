@@ -13,7 +13,7 @@ public class OrderRequestDTO
 {
     @JsonProperty("product_id")
     private Long productId;
-    private Long quantity;
+    private int quantity;
 
     @JsonProperty("unit_price")
     private double unitPrice;

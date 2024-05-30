@@ -1,8 +1,6 @@
 package com.example.swp.controllers;
 
-import com.example.swp.dtos.OrderDTO;
-import com.example.swp.dtos.OrderRequestDetailDTO;
-import com.example.swp.dtos.ProductDTO;
+import com.example.swp.dtos.*;
 import com.example.swp.entities.Orders;
 import com.example.swp.entities.Products;
 import com.example.swp.exceptions.DataNotFoundException;
@@ -21,6 +19,8 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/v1/orders")
@@ -62,8 +62,6 @@ public ResponseEntity<?> createOrder(@Valid @RequestBody OrderRequestDetailDTO r
                 return ResponseEntity.badRequest().body(errorMessages);
             }
         Orders order = orderService.createOrder(
-                request.getOrderDTO().getCustomerId(),
-                request.getOrderDTO().getUserId(),
                 request.getOrderRequests(),
                 request.getOrderDTO()
         );
@@ -80,12 +78,61 @@ public ResponseEntity<?> createOrder(@Valid @RequestBody OrderRequestDetailDTO r
     public ResponseEntity<OrderListResponse> getAllOrders() {
 
       List<Orders> orders = orderService.getAllOrders();
+
+        List<OrderResponse> orderResponses = orders.stream()
+                .map(OrderResponse::fromOrders)
+                .collect(Collectors.toList());
+
         return ResponseEntity.ok(OrderListResponse.builder()
-                .orders(orders)
+                .orders(orderResponses)
                 .build());
     }
 
+    @GetMapping("/get_order_by_id/{orderId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER','ROLE_STAFF')")
+    public ResponseEntity<?> getOrder(@Valid @PathVariable Long orderId) throws DataNotFoundException {
+        Orders order = orderService.getOrderById(orderId);
+        return ResponseEntity.ok(OrderResponse.fromOrders(order));
+    }
+
+    @GetMapping("/get_order_by_userId/{userId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    public ResponseEntity<OrderListResponse> getAllOrders(@Valid @PathVariable Long userId) {
+
+        List<Orders> orders = orderService.getOrdersByUserId(userId);
+
+        List<OrderResponse> orderResponses = orders.stream()
+                .map(OrderResponse::fromOrders)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(OrderListResponse.builder()
+                .orders(orderResponses)
+                .build());
+    }
+
+    @PutMapping("/update/{orderId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    public ResponseEntity<?> updateOrderAndOrderDetail(@Valid @PathVariable Long orderId,
+                                                       @RequestBody UpdateOrderRequestDTO updateOrderRequestDTO){
+        try {
+            orderService.updateOrderOrderDetail(orderId, updateOrderRequestDTO.getOrderDTO(),
+                    updateOrderRequestDTO.getProductsToAdd(), updateOrderRequestDTO.getProductsToRemove());
+            return ResponseEntity.ok("Order and Order Detail updated successfully.");
+        } catch (DataNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 
 
+    @DeleteMapping("/delete/{orderId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    public ResponseEntity<?> deleteOrder(@Valid @PathVariable Long orderId) {
+        try {
+            orderService.deleteOrder(orderId);
+            return ResponseEntity.ok("Order and associated Order Details deleted successfully.");
+        } catch (DataNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 
 }
