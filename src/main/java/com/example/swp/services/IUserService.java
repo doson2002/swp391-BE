@@ -28,4 +28,6 @@ public interface IUserService {
     void blockOrEnable(Long userId, Boolean active) throws DataNotFoundException;
 
     Users updateUser(long id, UserDTO userDTO) throws Exception;
+
+    void updatePassword(String email, String password) ;
 }

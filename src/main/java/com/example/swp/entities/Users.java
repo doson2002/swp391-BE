@@ -50,6 +50,9 @@ public class Users extends BaseEntity implements UserDetails {
     @JoinColumn(name = "counter_id", nullable = true)
     private Counters counter;
 
+    @OneToOne(mappedBy = "user")
+    private ForgotPassword forgotPassword;
+
     @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;

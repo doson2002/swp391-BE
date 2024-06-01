@@ -195,18 +195,23 @@ public class UserService implements IUserService{
             throw new Exception("User not found");
         }
     }
+    @Override
+    public void updatePassword(String email, String password) {
+        userRepository.updatePassword(email, password);
+    }
 
     @Override
     public Users changePassword (Long id, ChangePasswordDTO changePasswordDTO) throws DataNotFoundException {
-        Users existingUser = userRepository.findById(id)
-                .orElseThrow(()->new DataNotFoundException("User not found with id"+ id));
+        Users existingUser = getUser(id);
         if (existingUser != null) {
+            if (!passwordEncoder.matches(changePasswordDTO.oldPassword(), existingUser.getPassword())) {
+                throw new DataNotFoundException("The old password is incorrect!!");
+            }
             if (!changePasswordDTO.password().equals(changePasswordDTO.retypePassword())) {
                 throw new DataNotFoundException("New password and retype password do not match!!!");
             }
             String newPasswordEncode = passwordEncoder.encode(changePasswordDTO.password());
             existingUser.setPassword(newPasswordEncode);
-            existingUser.setFirstLogin(false);
             return userRepository.save(existingUser);
         }
         return null;
