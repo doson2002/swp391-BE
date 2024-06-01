@@ -28,9 +28,11 @@ public class Products {
     private double priceStone;
     @JsonProperty(value = "weight")
     private double weight;
+    @JsonProperty(value = "weight_unit")
+    private String weightUnit;
     @JsonProperty(value = "description")
     private String description;
-    @JsonProperty(value = "type")
+    @JsonProperty(value = "status")
     private boolean status;
 
     @JsonProperty(value = "price_rate")
