@@ -87,7 +87,7 @@ public class UserController {
     @PostMapping("/register")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> createUser(@Valid @RequestBody UserDTO userDTO,
-                                         BindingResult result) {
+                                                BindingResult result) {
         RegisterResponse registerResponse = new RegisterResponse();
         List<String> errorMessages = null;
         if (result.hasErrors()) {

@@ -29,4 +29,7 @@ public class Promotions {
 
     @JsonProperty(value = "end_date")
     private Long endDate;
+
+    @JsonProperty(value = "is_used")
+    private boolean isUsed;
 }
