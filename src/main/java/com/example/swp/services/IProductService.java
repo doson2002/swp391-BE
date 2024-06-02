@@ -7,6 +7,8 @@ import com.example.swp.responses.ProductResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.List;
+
 public interface IProductService {
     Products createProduct(ProductDTO productDTO) throws DataNotFoundException;
     Products updateProduct(Long id, ProductDTO productDTO) throws DataNotFoundException;
@@ -16,4 +18,5 @@ public interface IProductService {
     Page<ProductResponse> getAllProducts(String keyword, PageRequest pageRequest);
 
     Products getProduct(Long id) throws DataNotFoundException;
+    List<Products> getProductsByCounterId(Long counterId);
 }

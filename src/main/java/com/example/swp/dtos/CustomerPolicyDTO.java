@@ -1,23 +1,15 @@
-package com.example.swp.entities;
+package com.example.swp.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.Date;
 
-@Entity
+@Data
 @Builder
-@Table(name = "customer_policy")
-@Setter
-@Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomerPolicies {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+public class CustomerPolicyDTO {
     private String description;
 
     @JsonProperty(value = "discount_rate")
@@ -34,6 +26,4 @@ public class CustomerPolicies {
 
     @JsonProperty(value = "approval_required")
     private boolean approvalRequired;
-
-
 }

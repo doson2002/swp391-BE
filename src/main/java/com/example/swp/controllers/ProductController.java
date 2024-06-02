@@ -88,4 +88,10 @@ public class ProductController {
         return ResponseEntity.ok(ProductResponse.fromProducts(product));
     }
 
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER')")
+    @GetMapping("/get_products_by_counter/{counterId}")
+    public List<Products> getProductsByCounterId(@PathVariable Long counterId) {
+        return productService.getProductsByCounterId(counterId);
+    }
+
 }

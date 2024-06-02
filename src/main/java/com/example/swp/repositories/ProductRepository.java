@@ -8,9 +8,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ProductRepository extends JpaRepository<Products,Long> {
     @Query("SELECT p FROM Products p WHERE " +
             "(:keyword IS NULL OR :keyword = '' OR p.productName ILIKE %:keyword%)")
     Page<Products> searchProducts(@Param("keyword") String keyword, Pageable pageable);
+
+    List<Products> findByCounterId(Long counterId);
 }
