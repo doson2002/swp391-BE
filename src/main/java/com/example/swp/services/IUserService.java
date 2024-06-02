@@ -8,12 +8,16 @@ import com.example.swp.responses.UserResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.List;
+
 public interface IUserService {
     Users createUser(UserDTO userDTO) throws Exception;
 
     Page<UserResponse> getAllUsers(String keyword, PageRequest pageRequest);
 
     Users getUser(Long id) throws DataNotFoundException;
+
+    List<Users> getUserByRoleAndCounter(Long roleId, Long counterId) throws DataNotFoundException;
 
     void deleteUser(Long userId);
 

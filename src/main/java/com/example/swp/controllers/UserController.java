@@ -134,10 +134,20 @@ public class UserController {
                 .build());
     }
     @GetMapping("/get_user_by_id/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> getUserById(@Valid @PathVariable Long id) throws DataNotFoundException {
         Users user =userService.getUser(id);
         return ResponseEntity.ok(UserResponse.fromUser(user));
     }
+
+    @GetMapping("/get_user_by_role_and_counter")
+    public ResponseEntity<?>getUsersByRoleAndCounter(
+            @RequestParam(defaultValue = "") Long roleId,
+            @RequestParam(required = false) Long counterId) throws DataNotFoundException {
+        List<Users> users =userService.getUserByRoleAndCounter(roleId, counterId);
+        return ResponseEntity.ok(users);
+    }
+
 
     @PutMapping("/update/{id}")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")

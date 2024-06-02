@@ -114,6 +114,16 @@ public class UserService implements IUserService{
     public Users getUser(Long id) throws DataNotFoundException {
         return userRepository.findById(id).orElseThrow(()->new DataNotFoundException("User not found"));
     }
+    public List<Users> getUserByRoleAndCounter(Long roleId, Long counterId) throws DataNotFoundException {
+        if (!roleRepository.existsById(roleId)) {
+            throw new DataNotFoundException("Role not found with id " + roleId);
+        }
+        if (counterId!=null && !counterRepository.existsById(counterId)) {
+            throw new DataNotFoundException("Counter not found with id " + counterId);
+        }
+        return userRepository.findByRoleIdAndCounterId(roleId, counterId);
+    }
+
     @Override
     public Users updateUser(long id, UserDTO userDTO) throws Exception {
         Users existingUser = userRepository.findUserById(id);

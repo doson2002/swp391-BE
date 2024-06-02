@@ -22,7 +22,7 @@ public class ProductDTO {
     @JsonProperty(value = "weight")
     private double weight;
     @JsonProperty(value = "weight_unit")
-    private double weightUnit;
+    private String weightUnit;
     @JsonProperty(value = "description")
     private String description;
     @JsonProperty(value = "image_url")
