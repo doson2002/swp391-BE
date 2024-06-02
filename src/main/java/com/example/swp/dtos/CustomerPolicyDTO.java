@@ -7,6 +7,8 @@ import java.util.Date;
 
 @Data
 @Builder
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class CustomerPolicyDTO {
@@ -26,4 +28,7 @@ public class CustomerPolicyDTO {
 
     @JsonProperty(value = "approval_required")
     private boolean approvalRequired;
+
+    @JsonProperty(value = "customer_id")
+    private Long customerId;
 }

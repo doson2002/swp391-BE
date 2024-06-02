@@ -32,8 +32,24 @@ public class CustomerPolicies {
     @JsonProperty(value = "valid_to")
     private Date validTo;
 
+    @JsonProperty(value = "created_by")
+    private String createdBy;
+
     @JsonProperty(value = "approval_required")
     private boolean approvalRequired;
+
+    @JsonProperty(value = "approved_by")
+    private String approvedBy;
+
+    @JsonProperty(value = "approval_date")
+    private Date approvalDate;
+
+    @JsonProperty(value = "publishing_status")
+    private String publishingStatus;
+
+    @ManyToOne
+    @JoinColumn(name = "customer_id")
+    private Customers customer;
 
 
 }
