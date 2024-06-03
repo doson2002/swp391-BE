@@ -35,6 +35,7 @@ public class ProductService implements IProductService{
                 .priceProcessing(productDTO.getPriceProcessing())
                 .priceStone(productDTO.getPriceStone())
                 .weight(productDTO.getWeight())
+                .weightUnit(productDTO.getWeightUnit())
                 .quantity(productDTO.getQuantity())
                 .description(productDTO.getDescription())
                 .imageUrl(productDTO.getImageUrl())
