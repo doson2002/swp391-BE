@@ -1,19 +1,16 @@
-package com.example.swp.dtos;
+package com.example.swp.responses;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import jakarta.validation.constraints.Email;
 import lombok.*;
 
-@Data
-@Builder
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CustomersDTO {
-
+@Builder
+public class CustomerResponse {
+    private Long id;
     private String fullName;
-    @Email
     private String email;
     private String phone;
     private String address;
