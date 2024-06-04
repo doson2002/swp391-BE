@@ -15,9 +15,11 @@ public class Customers {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @JsonProperty(value = "full_name")
+    @Column(name = "full_name")
     private String fullName;
+    @Column(name = "email", unique = true)
     private String email;
+    @Column(name = "phone", unique = true)
     private String phone;
     private String address;
     private double accumulated_point;
