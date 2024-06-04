@@ -32,6 +32,8 @@ public interface UserRepository extends JpaRepository<Users,Long> {
     @Query("update Users u set u.password = ?2 where u.email = ?1")
     void updatePassword(String email, String password);
 
+    void deleteByCounterId(Long counterId);
+
 
 
 }

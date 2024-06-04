@@ -17,4 +17,6 @@ public interface ProductRepository extends JpaRepository<Products,Long> {
     Page<Products> searchProducts(@Param("keyword") String keyword, Pageable pageable);
 
     List<Products> findByCounterId(Long counterId);
+
+    void deleteByCounterId(Long counterId);
 }
