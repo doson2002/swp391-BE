@@ -162,8 +162,6 @@ public class OrderService implements IOrderService{
                 .orElseThrow(()->new DataNotFoundException("Order cannot find with id: "+ orderId));
         orderDetailRepository.deleteByOrderId(orderId);
         orderRepository.delete(existingOrder);
-
-
     }
 
 
