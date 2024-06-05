@@ -2,6 +2,7 @@ package com.example.swp.controllers;
 
 import com.example.swp.dtos.ChangePasswordDTO;
 import com.example.swp.dtos.OtpDTO;
+import com.example.swp.exceptions.DataNotFoundException;
 import com.example.swp.repositories.UserRepository;
 import com.example.swp.services.ForgotPasswordService;
 import com.example.swp.services.IUserService;
@@ -37,7 +38,7 @@ public class ForgotPasswordController {
     }
     @PostMapping("/change_password/{email}")
     public ResponseEntity<String> changePasswordHandler(@RequestBody ChangePasswordDTO changePasswordDTO,
-                                                        @PathVariable String email) {
+                                                        @PathVariable String email) throws DataNotFoundException {
         if (!Objects.equals(changePasswordDTO.password(), changePasswordDTO.retypePassword())) {
             return new ResponseEntity<>("Please enter password again!", HttpStatus.EXPECTATION_FAILED);
         }
