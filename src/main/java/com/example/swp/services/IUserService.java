@@ -33,5 +33,5 @@ public interface IUserService {
 
     Users updateUser(long id, UserDTO userDTO) throws Exception;
 
-    void updatePassword(String email, String password) ;
+    void updatePassword(String email, String password) throws DataNotFoundException;
 }
