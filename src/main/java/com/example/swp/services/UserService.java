@@ -206,8 +206,14 @@ public class UserService implements IUserService{
         }
     }
     @Override
-    public void updatePassword(String email, String password) {
+    public void updatePassword(String email, String password) throws DataNotFoundException {
+        Users existingUser = userRepository.findByEmail(email)
+                        .orElseThrow(()->new DataNotFoundException("User not found with email: "+ email));
         userRepository.updatePassword(email, password);
+        existingUser.setFirstLogin(false);
+        userRepository.save(existingUser);
+
+
     }
 
     @Override
@@ -222,6 +228,7 @@ public class UserService implements IUserService{
             }
             String newPasswordEncode = passwordEncoder.encode(changePasswordDTO.password());
             existingUser.setPassword(newPasswordEncode);
+            existingUser.setFirstLogin(false);
             return userRepository.save(existingUser);
         }
         return null;
