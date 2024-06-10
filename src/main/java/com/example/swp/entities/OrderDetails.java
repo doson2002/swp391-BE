@@ -18,7 +18,7 @@ public class OrderDetails {
 
     private int quantity;
 
-    @JsonProperty(value = "unit_price")
+    @Column(name = "unit_price")
     private double unitPrice;
 
     @ManyToOne

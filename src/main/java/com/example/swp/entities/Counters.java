@@ -18,4 +18,5 @@ public class Counters {
     private String location;
     @Column(name = "counter_name")
     private String counterName;
+    private Boolean status;
 }

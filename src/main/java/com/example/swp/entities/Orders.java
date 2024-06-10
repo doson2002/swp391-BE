@@ -21,7 +21,7 @@ public class Orders extends BaseEntity{
     private Date date;
     private double discount;
 
-    @JsonProperty(value = "created_by")
+    @Column(name = "created_by")
     private String createdBy;
     private String type;
 

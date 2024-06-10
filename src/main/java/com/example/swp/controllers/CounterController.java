@@ -57,14 +57,16 @@ public class CounterController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    @DeleteMapping("/delete/{counterId}")
+    @PutMapping("/delete/{counterId}/{status}")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
-    public ResponseEntity<?> deleteCounter(@Valid @PathVariable Long counterId) {
+    public ResponseEntity<?> blockCounter(@Valid @PathVariable Long counterId,
+                                          @Valid @PathVariable("status") Boolean status) {
         try {
-            counterService.deleteCounter(counterId);
-            return ResponseEntity.ok("Counter deleted successfully.");
+            counterService.blockCounter(counterId, status);
+            String message = status ? "Unblock successfully." : "Counter was blocked successfully.";
+            return ResponseEntity.ok(message);
         } catch (DataNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 

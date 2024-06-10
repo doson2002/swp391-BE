@@ -16,29 +16,29 @@ public class Products {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @JsonProperty(value = "product_name")
+    @Column(name = "product_name")
     private String productName;
-    @JsonProperty(value = "barcode")
+    @Column(name = "barcode")
     private String barcode;
-    @JsonProperty(value = "quantity")
+    @Column(name = "quantity")
     private Long quantity;
-    @JsonProperty(value = "price_processing")
+    @Column(name = "price_processing")
     private double priceProcessing;
-    @JsonProperty(value = "price_stone")
+    @Column(name = "price_stone")
     private double priceStone;
-    @JsonProperty(value = "weight")
+    @Column(name = "weight")
     private double weight;
-    @JsonProperty(value = "weight_unit")
+    @Column(name = "weight_unit")
     private String weightUnit;
-    @JsonProperty(value = "description")
+    @Column(name = "description")
     private String description;
-    @JsonProperty(value = "status")
+    @Column(name = "status")
     private boolean status;
 
-    @JsonProperty(value = "price_rate")
+    @Column(name = "price_rate")
     private double priceRate;  //tỉ lệ áp giá
 
-    @JsonProperty(value = "image_url")
+    @Column(name = "image_url")
     private String imageUrl;
 
     @ManyToOne

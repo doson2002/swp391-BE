@@ -2,6 +2,9 @@ package com.example.swp.services;
 
 import com.example.swp.dtos.CounterDTO;
 import com.example.swp.entities.Counters;
+import com.example.swp.entities.OrderDetails;
+import com.example.swp.entities.Orders;
+import com.example.swp.entities.Products;
 import com.example.swp.exceptions.DataNotFoundException;
 import com.example.swp.repositories.CounterRepository;
 import com.example.swp.repositories.OrderDetailRepository;
@@ -56,13 +59,20 @@ public class CounterService implements ICounterService{
     }
 
     @Override
-    public void deleteCounter(Long counterId) throws DataNotFoundException {
+    public void blockCounter(Long counterId, Boolean status) throws DataNotFoundException {
         Counters existingCounter = counterRepository.findById(counterId)
                 .orElseThrow(()->new DateTimeException("Counter not found with id: " +counterId));
-        orderDetailRepository.deleteByCounterId(counterId);
-        productRepository.deleteByCounterId(counterId);
-        userRepository.deleteByCounterId(counterId);
-
-        counterRepository.delete(existingCounter);
+        List<Products> existingProduct = productRepository.findByCounterId(counterId);
+        List<OrderDetails> existingOrderDetail = orderDetailRepository.findByCounterId(counterId);
+        for (Products product : existingProduct) {
+            product.setCounter(null);
+            productRepository.save(product);
+        }
+        for (OrderDetails orderDetail : existingOrderDetail) {
+            orderDetail.setCounter(null);
+            orderDetailRepository.save(orderDetail);
+        }
+        existingCounter.setStatus(status);
+        counterRepository.save(existingCounter);
     }
 }

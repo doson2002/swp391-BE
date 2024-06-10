@@ -59,12 +59,19 @@ public class OrderService implements IOrderService{
         for (OrderRequestDTO orderRequest : orderRequests) {
             Products product = productRepository.findById(orderRequest.getProductId())
                     .orElseThrow(() -> new RuntimeException("Product not found"));
+            if (product.getQuantity() < orderRequest.getQuantity()) {
+                throw new DataNotFoundException("Insufficient stock for product ID: " + orderRequest.getProductId());
+            }
+
 
             OrderDetails orderDetail = new OrderDetails();
             orderDetail.setOrder(order);
             orderDetail.setProduct(product);
             orderDetail.setQuantity(orderRequest.getQuantity());
             orderDetail.setUnitPrice(orderRequest.getUnitPrice()); // Assuming there is a getPrice method in Products class
+
+            // Update the product stock
+            product.setQuantity(product.getQuantity() - orderRequest.getQuantity());
             orderDetailRepository.save(orderDetail);
         }
 

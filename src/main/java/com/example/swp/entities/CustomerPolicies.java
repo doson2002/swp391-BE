@@ -20,31 +20,31 @@ public class CustomerPolicies {
 
     private String description;
 
-    @JsonProperty(value = "discount_rate")
+    @Column(name = "discount_rate")
     private double discountRate;
 
-    @JsonProperty(value = "fixed_discount_amount")
+    @Column(name = "fixed_discount_amount")
     private Long fixedDiscountAmount;
 
-    @JsonProperty(value = "valid_from")
+    @Column(name = "valid_from")
     private Date validFrom;
 
-    @JsonProperty(value = "valid_to")
+    @Column(name = "valid_to")
     private Date validTo;
 
-    @JsonProperty(value = "created_by")
+    @Column(name = "created_by")
     private String createdBy;
 
-    @JsonProperty(value = "approval_required")
+    @Column(name = "approval_required")
     private boolean approvalRequired;
 
-    @JsonProperty(value = "approved_by")
+    @Column(name = "approved_by")
     private String approvedBy;
 
-    @JsonProperty(value = "approval_date")
+    @Column(name = "approval_date")
     private Date approvalDate;
 
-    @JsonProperty(value = "publishing_status")
+    @Column(name = "publishing_status")
     private String publishingStatus;
 
     @ManyToOne

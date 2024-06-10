@@ -1,5 +1,6 @@
 package com.example.swp.responses;
 
+import com.example.swp.entities.Customers;
 import com.example.swp.entities.Orders;
 import com.example.swp.entities.Products;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -20,8 +21,8 @@ public class OrderResponse {
     @JsonProperty(value = "created_by")
     private String createdBy;
     private String type;
-    @JsonProperty(value = "customer_id")
-    private Long customerId;
+    @JsonProperty(value = "customer")
+    private Customers customer;
     @JsonProperty(value = "user_id")
     private Long userId;
 
@@ -32,7 +33,7 @@ public class OrderResponse {
                 .discount(orders.getDiscount())
                 .type(orders.getType())
                 .date(orders.getDate())
-                .customerId(orders.getCustomer().getId())
+                .customer(orders.getCustomer())
                 .userId(orders.getUser().getId())
                 .build();
         return orderResponse;
