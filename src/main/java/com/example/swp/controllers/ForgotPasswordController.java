@@ -9,6 +9,7 @@ import com.example.swp.services.IUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
@@ -37,6 +38,7 @@ public class ForgotPasswordController {
         return ResponseEntity.ok("OTP verified!");
     }
     @PostMapping("/change_password/{email}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF','ROLE_MANAGER')")
     public ResponseEntity<String> changePasswordHandler(@RequestBody ChangePasswordDTO changePasswordDTO,
                                                         @PathVariable String email) throws DataNotFoundException {
         if (!Objects.equals(changePasswordDTO.password(), changePasswordDTO.retypePassword())) {

@@ -154,8 +154,8 @@ public class UserController {
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> updateUser(@PathVariable long id, @RequestBody UserDTO userDTO) {
         try {
-            Users updateUser = userService.updateUser(id, userDTO);
-            return ResponseEntity.ok((updateUser));
+            userService.updateUser(id, userDTO);
+            return ResponseEntity.ok("Update User successfully");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

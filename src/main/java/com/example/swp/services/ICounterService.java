@@ -16,5 +16,5 @@ public interface ICounterService {
     List<Counters> getAllCounters();
     Counters updateCounter(Long id, CounterDTO counterDTO) throws DataNotFoundException;
 
-    void deleteCounter(Long id) throws DataNotFoundException;
+    void blockCounter(Long id, Boolean status) throws DataNotFoundException;
 }
