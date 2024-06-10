@@ -3,6 +3,7 @@ package com.example.swp.services;
 import com.example.swp.dtos.CustomersDTO;
 import com.example.swp.entities.Customers;
 import com.example.swp.exceptions.DataNotFoundException;
+import com.example.swp.exceptions.DuplicateDataException;
 import com.example.swp.repositories.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,8 +20,16 @@ public class CustomerService implements ICustomerService {
 
 
     @Override
-    public Customers addCustomer(CustomersDTO customersDTO) {
+    public Customers addCustomer(CustomersDTO customersDTO) throws DuplicateDataException {
+        Optional<Customers> existingCustomerByEmail = customerRepository.findByEmail(customersDTO.getEmail());
+        if (existingCustomerByEmail.isPresent()) {
+            throw new DuplicateDataException("Email already exists: " + customersDTO.getEmail());
+        }
 
+        boolean checkExistingCustomerByPhone = customerRepository.existsByPhone(customersDTO.getPhone());
+        if (checkExistingCustomerByPhone) {
+            throw new DuplicateDataException("Phone number already exists: " + customersDTO.getPhone());
+        }
         Customers newCustomer = Customers
                 .builder()
                 .fullName(customersDTO.getFullName())
