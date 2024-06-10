@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface CustomerRepository extends JpaRepository<Customers, Long> {
@@ -15,4 +16,9 @@ public interface CustomerRepository extends JpaRepository<Customers, Long> {
     List<Customers> findByFullNameContainingIgnoreCase(String keyword);
 
     Customers findByPhone(String phone);
+
+    Optional<Customers> findByEmail(String email);
+
+    boolean existsByPhone(String phone);
+
 }

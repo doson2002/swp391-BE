@@ -47,6 +47,8 @@ public class OrderService implements IOrderService{
         Users user = userRepository.findById(orderDTO.getUserId())
                 .orElseThrow(() -> new DataNotFoundException("User not found"));
 
+        boolean checkExistingOrder = orderRepository.existsByCustomer_Id(orderDTO.getCustomerId());
+
         Orders order = new Orders();
         order.setDate(new Date());
         order.setCustomer(customer);
@@ -54,28 +56,44 @@ public class OrderService implements IOrderService{
         order.setType(orderDTO.getType());
         order.setUser(user);
         order.setCreatedBy(user.getUsername()); // Assuming there is a getUsername method in Users class
-        order = orderRepository.save(order);
+
+
 
         for (OrderRequestDTO orderRequest : orderRequests) {
+
             Products product = productRepository.findById(orderRequest.getProductId())
                     .orElseThrow(() -> new RuntimeException("Product not found"));
-            if (product.getQuantity() < orderRequest.getQuantity()) {
-                throw new DataNotFoundException("Insufficient stock for product ID: " + orderRequest.getProductId());
+            if(orderDTO.getType().equals("buy")){
+                if(checkExistingOrder){
+                    OrderDetails orderDetail = new OrderDetails();
+                    orderDetail.setOrder(order);
+                    orderDetail.setProduct(product);
+                    orderDetail.setQuantity(orderRequest.getQuantity());
+                    orderDetail.setUnitPrice(orderRequest.getUnitPrice()); // Assuming there is a getPrice method in Products class
+
+                    // Update the product stock
+                    product.setQuantity(product.getQuantity() + orderRequest.getQuantity());
+                    orderDetailRepository.save(orderDetail);
+                }else {
+                    throw new DataNotFoundException("Can not find Order with customer id:" + orderDTO.getCustomerId());
+                }
+            }else if (orderDTO.getType().equals("sell")) {
+                if (product.getQuantity() < orderRequest.getQuantity()) {
+                    throw new DataNotFoundException("Insufficient stock for product ID: " + orderRequest.getProductId());
+                }
+
+                OrderDetails orderDetail = new OrderDetails();
+                orderDetail.setOrder(order);
+                orderDetail.setProduct(product);
+                orderDetail.setQuantity(orderRequest.getQuantity());
+                orderDetail.setUnitPrice(orderRequest.getUnitPrice()); // Assuming there is a getPrice method in Products class
+
+                // Update the product stock
+                product.setQuantity(product.getQuantity() - orderRequest.getQuantity());
+                orderDetailRepository.save(orderDetail);
             }
-
-
-            OrderDetails orderDetail = new OrderDetails();
-            orderDetail.setOrder(order);
-            orderDetail.setProduct(product);
-            orderDetail.setQuantity(orderRequest.getQuantity());
-            orderDetail.setUnitPrice(orderRequest.getUnitPrice()); // Assuming there is a getPrice method in Products class
-
-            // Update the product stock
-            product.setQuantity(product.getQuantity() - orderRequest.getQuantity());
-            orderDetailRepository.save(orderDetail);
         }
-
-        return order;
+        return orderRepository.save(order);
     }
     public List<Orders> getAllOrders(){
         return orderRepository.findAll();
