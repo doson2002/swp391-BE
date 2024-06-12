@@ -1,5 +1,6 @@
 package com.example.swp.services;
 
+import com.example.swp.dtos.TypePricesDTO;
 import com.example.swp.entities.TypePrices;
 import com.example.swp.exceptions.DataNotFoundException;
 import com.example.swp.repositories.TypePriceRepository;
@@ -24,6 +25,17 @@ public class TypePriceService implements ITypePriceService{
     public Optional<TypePrices> getTypePriceById(Long id) {
         return typePriceRepository.findById(id);
     }
+
+    @Override
+    public TypePrices createTypePrice(TypePricesDTO typePricesdto) {
+            TypePrices typePrices = new TypePrices();
+            typePrices.setDate(typePricesdto.getDate());
+            typePrices.setBuyPricePerGram(typePricesdto.getBuyPricePerGram());
+            typePrices.setSellPricePerGram(typePricesdto.getSellPricePerGram());
+            typePrices.setType(typePricesdto.getType());
+            return typePriceRepository.save(typePrices);
+        }
+
 
     @Override
     public TypePrices saveTypePrice(TypePrices typePrices) {

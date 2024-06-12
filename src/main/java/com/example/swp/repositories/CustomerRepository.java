@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customers, Long> {
 
-    List<Customers> findByFullNameContainingIgnoreCase(String keyword);
+    List<Customers> findCustomersBy(Long id, String phone);
 }

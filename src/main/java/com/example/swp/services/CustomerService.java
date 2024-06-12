@@ -18,6 +18,11 @@ public class CustomerService implements ICustomerService {
     private final CustomerRepository customerRepository;
 
     @Override
+    public List<Customers> getAllCustomers() {
+        return customerRepository.findAll();
+    }
+
+    @Override
     public CustomersDTO addCustomer(CustomersDTO customersDTO) {
         Customers customers = new Customers();
         customers.setFullName(customersDTO.getFullName());
@@ -30,8 +35,8 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public List<CustomersDTO> searchCustomers(String keyword) {
-        List<Customers> customers = customerRepository.findByFullNameContainingIgnoreCase(keyword);
+    public List<CustomersDTO> searchCustomers(Long id, String phone) {
+        List<Customers> customers = customerRepository.findCustomersBy(id, phone);
         return customers.stream()
                 .map(this::mapToDto)
                 .collect(Collectors.toList());

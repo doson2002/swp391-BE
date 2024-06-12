@@ -2,6 +2,7 @@ package com.example.swp.controllers;
 
 
 import com.example.swp.dtos.CustomersDTO;
+import com.example.swp.entities.Customers;
 import com.example.swp.exceptions.DataNotFoundException;
 import com.example.swp.services.ICustomerService;
 import lombok.RequiredArgsConstructor;
@@ -18,6 +19,11 @@ public class CustomerController {
 
     private final ICustomerService customerService;
 
+    @GetMapping("/get_all_customers")
+    public List<Customers> getAllCustomers() {
+        return customerService.getAllCustomers();
+    }
+
     @PostMapping("/add")
     public ResponseEntity<CustomersDTO> addCustomer(@RequestBody CustomersDTO customerDTO) {
         CustomersDTO addedCustomer = customerService.addCustomer(customerDTO);
@@ -25,8 +31,8 @@ public class CustomerController {
     }
 
     @GetMapping("/search")
-    public ResponseEntity<List<CustomersDTO>> searchCustomers(@RequestParam String keyword) {
-        List<CustomersDTO> customers = customerService.searchCustomers(keyword);
+    public ResponseEntity<List<CustomersDTO>> searchCustomers(@RequestParam Long id, String phone) {
+        List<CustomersDTO> customers = customerService.searchCustomers(id, phone);
         return new ResponseEntity<>(customers, HttpStatus.OK);
     }
 
