@@ -32,6 +32,11 @@ public class PromotionsService implements IPromotionsService{
     }
 
     @Override
+    public List<Promotions> getAllPromotions() {
+        return promotionsRepository.findAll();
+    }
+
+    @Override
     public void deleteExpiredPromotions() throws Exception {
         Long now = Instant.now().getEpochSecond();
         List<Promotions> promotionsToDelete = promotionsRepository.findAll().stream()
