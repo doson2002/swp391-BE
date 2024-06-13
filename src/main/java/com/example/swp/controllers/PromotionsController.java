@@ -7,6 +7,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/promotions")
@@ -17,6 +20,12 @@ public class PromotionsController {
     public ResponseEntity<Promotions> createPromotions(@RequestBody PromotionsDTO promotionsDTO) {
         Promotions promotion = promotionsService.createPromotion(promotionsDTO);
         return ResponseEntity.ok(promotion);
+    }
+
+
+    @GetMapping("/promotions")
+    public List<Promotions> getAllPromotions() {
+        return promotionsService.getAllPromotions();
     }
 
     @DeleteMapping("/delete")

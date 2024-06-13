@@ -11,6 +11,7 @@ import java.util.Optional;
 @Repository
 public interface CustomerRepository extends JpaRepository<Customers, Long> {
 
+
     @Query("SELECT c FROM Customers c WHERE " +
             "(:keyword IS NULL OR :keyword = '' OR c.fullName ILIKE %:keyword%)")
     List<Customers> findByFullNameContainingIgnoreCase(String keyword);

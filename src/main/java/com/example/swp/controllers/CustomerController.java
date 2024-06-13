@@ -4,7 +4,6 @@ package com.example.swp.controllers;
 import com.example.swp.dtos.CustomersDTO;
 import com.example.swp.entities.Customers;
 import com.example.swp.exceptions.DataNotFoundException;
-import com.example.swp.exceptions.DuplicateDataException;
 import com.example.swp.services.ICustomerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +20,7 @@ import java.util.List;
 public class CustomerController {
 
     private final ICustomerService customerService;
+
 
     @PostMapping("/create")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF','ROLE_MANAGER')")
@@ -40,6 +40,7 @@ public class CustomerController {
 
         }
     }
+
 
     @GetMapping("/get_customer_by_phone")
     public  ResponseEntity<?> getCustomerByPhone(@RequestParam String phone) throws DataNotFoundException {
