@@ -38,7 +38,6 @@ public class ForgotPasswordController {
         return ResponseEntity.ok("OTP verified!");
     }
     @PostMapping("/change_password/{email}")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF','ROLE_MANAGER')")
     public ResponseEntity<String> changePasswordHandler(@RequestBody ChangePasswordDTO changePasswordDTO,
                                                         @PathVariable String email) throws DataNotFoundException {
         if (!Objects.equals(changePasswordDTO.password(), changePasswordDTO.retypePassword())) {
