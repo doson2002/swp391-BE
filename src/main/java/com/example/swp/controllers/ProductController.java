@@ -29,7 +29,7 @@ public class ProductController {
     private final IProductService productService;
 
     @PostMapping("/create")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER')")
     public ResponseEntity<?> createProduct(
             @Valid @RequestBody ProductDTO productDTO,
             BindingResult result){
@@ -60,6 +60,7 @@ public class ProductController {
         }
     }
     @DeleteMapping("/soft_delete_product/{productId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER')")
     public ResponseEntity<String> deleteProduct(@PathVariable Long productId,
                                                 @PathVariable Boolean status) {
         try {
@@ -70,7 +71,7 @@ public class ProductController {
         }
     }
     @GetMapping("/get_all_products")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER','STAFF')")
     public ResponseEntity<ProductListResponse> getAllProducts(
             @RequestParam(defaultValue = "")String keyword,
             @RequestParam("page") int page, @RequestParam("limit")int limit){
@@ -84,7 +85,7 @@ public class ProductController {
                 .build());
     }
     @GetMapping("/get_product_by_id/{productId}")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER','STAFF')")
     public ResponseEntity<?> getProduct(@Valid @PathVariable Long productId) throws DataNotFoundException {
         Products product = productService.getProduct(productId);
         return ResponseEntity.ok(ProductResponse.fromProducts(product));
