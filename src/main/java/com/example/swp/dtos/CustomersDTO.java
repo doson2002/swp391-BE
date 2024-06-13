@@ -1,19 +1,22 @@
 package com.example.swp.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import jakarta.validation.constraints.Email;
+import lombok.*;
 
+@Data
+@Builder
 @Getter
 @Setter
-@NoArgsConstructor
 @AllArgsConstructor
+@NoArgsConstructor
 public class CustomersDTO {
-    private Long id;
+
     private String fullName;
+    @Email
     private String email;
     private String phone;
     private String address;
+    @JsonProperty(value = "accumulated_point")
+    private double accumulatedPoint;
 }

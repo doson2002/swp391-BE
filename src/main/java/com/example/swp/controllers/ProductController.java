@@ -3,6 +3,7 @@ package com.example.swp.controllers;
 import com.example.swp.dtos.ProductDTO;
 import com.example.swp.entities.Products;
 import com.example.swp.exceptions.DataNotFoundException;
+import com.example.swp.responses.OrderResponse;
 import com.example.swp.responses.ProductListResponse;
 import com.example.swp.responses.ProductResponse;
 import com.example.swp.services.IProductService;
@@ -19,6 +20,7 @@ import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/v1/products")
@@ -46,7 +48,7 @@ public class ProductController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-    @PostMapping("/update/{id}")
+    @PutMapping("/update/{id}")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER')")
     public ResponseEntity<?> updateProduct(@PathVariable Long id,
                                            @Valid @RequestBody ProductDTO productDTO){
@@ -86,6 +88,16 @@ public class ProductController {
     public ResponseEntity<?> getProduct(@Valid @PathVariable Long productId) throws DataNotFoundException {
         Products product = productService.getProduct(productId);
         return ResponseEntity.ok(ProductResponse.fromProducts(product));
+    }
+
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER')")
+    @GetMapping("/get_products_by_counter/{counterId}")
+    public ResponseEntity<?> getProductsByCounterId(@PathVariable Long counterId) {
+        List<Products> productsList = productService.getProductsByCounterId(counterId);
+        List<ProductResponse> productResponses = productsList.stream()
+                .map(ProductResponse::fromProducts)
+                .collect(Collectors.toList());
+        return ResponseEntity.ok(productResponses);
     }
 
 }

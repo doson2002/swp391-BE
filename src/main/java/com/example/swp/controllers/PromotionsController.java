@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.List;
 
 @RestController
@@ -20,6 +21,7 @@ public class PromotionsController {
         Promotions promotion = promotionsService.createPromotion(promotionsDTO);
         return ResponseEntity.ok(promotion);
     }
+
 
     @GetMapping("/promotions")
     public List<Promotions> getAllPromotions() {

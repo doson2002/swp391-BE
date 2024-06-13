@@ -21,11 +21,16 @@ public class Orders extends BaseEntity{
     private Date date;
     private double discount;
 
-    @JsonProperty(value = "created_by")
+    @Column(name = "created_by")
     private String createdBy;
+    private String type;
 
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private Customers customer;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private Users user;
 
 }

@@ -14,22 +14,26 @@ import lombok.*;
 @NoArgsConstructor
 public class Promotions {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(unique = true)
     private String code;
 
     private String description;
 
-    @JsonProperty(value = "discount_percentage")
+    @Column(name = "discount_percentage")
     private double discountPercentage;
 
-    @JsonProperty(value = "fixed_discount_amount")
+    @Column(name = "fixed_discount_amount")
     private Long fixedDiscountAmount;
 
-    @JsonProperty(value = "start_date")
+    @Column(name = "start_date")
     private Long startDate;
 
-    @JsonProperty(value = "end_date")
+    @Column(name = "end_date")
     private Long endDate;
 
-    @JsonProperty(value = "is_used")
+    @Column(name = "is_used")
     private boolean isUsed;
 }

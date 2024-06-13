@@ -8,13 +8,12 @@ import java.util.List;
 
 public interface ICustomerService {
 
-    List<Customers> getAllCustomers();
+    Customers addCustomer(CustomersDTO customersDTO) throws DuplicateDataException;
 
-    CustomersDTO addCustomer(CustomersDTO customersDTO);
+    List<Customers> getCustomers(String keyword);
+    Customers getCustomerByPhone(String phone) throws DataNotFoundException;
 
-    List<CustomersDTO> searchCustomers(Long id, String phone);
-
-    CustomersDTO updateCustomer(Long id, CustomersDTO customerDTO) throws DataNotFoundException;
+    Customers updateCustomer(Long id, CustomersDTO customerDTO) throws DataNotFoundException;
 
     void deleteCustomer(Long id) throws DataNotFoundException;
 

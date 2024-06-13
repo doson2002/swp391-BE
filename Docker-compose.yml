@@ -2,21 +2,33 @@ version: "3.8"
 
 services:
   db:
+    container_name: db_container
     image: postgres:latest
     restart: always
     ports:
-      - 5432:5432
+      - 5433:5432
     environment:
       - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=12345
-      - POSTGRES_DB=swp
+      - POSTGRES_PASSWORD=123456789
+      - POSTGRES_DB=swp391
     volumes:
       - db:/var/lib/postgresql/data
     networks:
       - my-network
+  pgadmin:
+    image: dpage/pgadmin4
+    depends_on:
+      - db
+    ports:
+      - "85:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@gmail.com
+      - PGADMIN_DEFAULT_PASSWORD=adminpassword
+    restart: unless-stopped
 
   app:
-
+    container_name: swp391-api-container
+    image: swp391/swp391-be
     depends_on:
       - db
     build:
@@ -25,15 +37,10 @@ services:
     ports:
       - 8080:8080
     environment:
-      SPRING_APPLICATION_JSON: '{
-        "spring.datasource.url"  : "jdbc:postgresql://localhost:5432/swp",
-        "spring.datasource.username" : "postgres",
-        "spring.datasource.password" : "12345",
-        "spring.datasource.driver-class-name" : "org.postgresql.Driver",
-        "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.PostgreSQLDialect",
-        "spring.jpa.hibernate.ddl-auto" : "update",
-        "spring.autoconfigure.exclude" : "org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration"
-      }'
+      SPRING_DATASOURCE_URL: jdbc:postgresql://swp391.czqqq2ogo3w7.ap-southeast-1.rds.amazonaws.com:5432/swp391?serverTimezone=UTC&allowPublicKeyRetrieval=true
+      PGADMIN_USER: postgres
+      PGADMIN_PASSWORD: 123456789
+
     #    volumes:
     #      - .m2:/root/.m2
     #    stdin_open: true
@@ -41,8 +48,10 @@ services:
     networks:
       - my-network
 
+
 volumes:
   db:
 networks:
   my-network:
     driver: bridge
+

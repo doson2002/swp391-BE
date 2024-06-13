@@ -24,5 +24,8 @@ public class LoginResponse {
     private Long id;
     private String email;
     private String name;
+
+    @JsonProperty("first_login")
+    private boolean firstLogin;
     private List<String> roles;
 }

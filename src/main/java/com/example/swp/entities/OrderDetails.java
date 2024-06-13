@@ -16,9 +16,9 @@ public class OrderDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long quantity;
+    private int quantity;
 
-    @JsonProperty(value = "unit_price")
+    @Column(name = "unit_price")
     private double unitPrice;
 
     @ManyToOne

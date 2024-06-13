@@ -23,39 +23,51 @@ public class CustomerService implements ICustomerService {
     }
 
     @Override
-    public CustomersDTO addCustomer(CustomersDTO customersDTO) {
-        Customers customers = new Customers();
-        customers.setFullName(customersDTO.getFullName());
-        customers.setEmail(customersDTO.getEmail());
-        customers.setPhone(customersDTO.getPhone());
-        customers.setAddress(customersDTO.getAddress());
+    public Customers addCustomer(CustomersDTO customersDTO) throws DuplicateDataException {
+        Optional<Customers> existingCustomerByEmail = customerRepository.findByEmail(customersDTO.getEmail());
+        if (existingCustomerByEmail.isPresent()) {
+            throw new DuplicateDataException("Email already exists: " + customersDTO.getEmail());
+        }
 
-        Customers savedCustomer = customerRepository.save(customers);
-        return mapToDto(savedCustomer);
+        boolean checkExistingCustomerByPhone = customerRepository.existsByPhone(customersDTO.getPhone());
+        if (checkExistingCustomerByPhone) {
+            throw new DuplicateDataException("Phone number already exists: " + customersDTO.getPhone());
+        }
+        Customers newCustomer = Customers
+                .builder()
+                .fullName(customersDTO.getFullName())
+                .email(customersDTO.getEmail())
+                .address(customersDTO.getAddress())
+                .phone(customersDTO.getPhone())
+                .accumulated_point(customersDTO.getAccumulatedPoint())
+                .build();
+        return customerRepository.save(newCustomer);
     }
 
     @Override
-    public List<CustomersDTO> searchCustomers(Long id, String phone) {
-        List<Customers> customers = customerRepository.findCustomersBy(id, phone);
-        return customers.stream()
-                .map(this::mapToDto)
-                .collect(Collectors.toList());
+    public List<Customers> getCustomers(String keyword) {
+        return customerRepository.findByFullNameContainingIgnoreCase(keyword);
+    }
+    public Customers getCustomerByPhone(String phone) throws DataNotFoundException {
+        Customers existingCustomer = customerRepository.findByPhone(phone);
+        if (existingCustomer==null){
+            throw new DataNotFoundException("Customer not found with phone number:" +phone);
+        }else
+            return existingCustomer;
     }
 
     @Override
-    public CustomersDTO updateCustomer(Long id, CustomersDTO customerDTO) throws DataNotFoundException {
-        Optional<Customers> optionalCustomer = customerRepository.findById(id);
-        if (optionalCustomer.isPresent()) {
-            Customers existingCustomer = optionalCustomer.get();
+    public Customers updateCustomer(Long id, CustomersDTO customerDTO) throws DataNotFoundException {
+        Customers existingCustomer = customerRepository.findById(id)
+                .orElseThrow(()-> new DataNotFoundException("Customer not found with id:"+ id));
+        if (existingCustomer!= null) {
             existingCustomer.setFullName(customerDTO.getFullName());
             existingCustomer.setEmail(customerDTO.getEmail());
             existingCustomer.setPhone(customerDTO.getPhone());
             existingCustomer.setAddress(customerDTO.getAddress());
-            Customers updatedCustomer = customerRepository.save(existingCustomer);
-            return mapToDto(updatedCustomer);
-        } else {
-            throw new DataNotFoundException("Customer not found with id: " + id);
+            customerRepository.save(existingCustomer);
         }
+        return null;
     }
 
     @Override
@@ -68,8 +80,4 @@ public class CustomerService implements ICustomerService {
         }
     }
 
-    private CustomersDTO mapToDto(Customers customers) {
-        return new CustomersDTO(customers.getId(), customers.getFullName(), customers.getEmail(),
-                customers.getPhone(), customers.getAddress());
-    }
 }

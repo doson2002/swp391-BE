@@ -15,6 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class ProductService implements IProductService{
@@ -33,8 +35,10 @@ public class ProductService implements IProductService{
                 .priceProcessing(productDTO.getPriceProcessing())
                 .priceStone(productDTO.getPriceStone())
                 .weight(productDTO.getWeight())
+                .weightUnit(productDTO.getWeightUnit())
                 .quantity(productDTO.getQuantity())
                 .description(productDTO.getDescription())
+                .imageUrl(productDTO.getImageUrl())
                 .type(existingType)
                 .counter(existingCounter)
                 .build();
@@ -59,6 +63,7 @@ public class ProductService implements IProductService{
             existingProduct.setWeight(productDTO.getWeight());
             existingProduct.setQuantity(productDTO.getQuantity());
             existingProduct.setDescription(productDTO.getDescription());
+            existingProduct.setImageUrl(productDTO.getImageUrl());
             existingProduct.setCounter(existingCounter);
             return productRepository.save(existingProduct);
         }
@@ -76,6 +81,9 @@ public class ProductService implements IProductService{
     }
     public Products getProduct(Long id) throws DataNotFoundException {
         return productRepository.findById(id).orElseThrow(()->new DataNotFoundException("Product not found with id:" + id));
+    }
+    public List<Products> getProductsByCounterId(Long counterId) {
+        return productRepository.findByCounterId(counterId);
     }
 
 

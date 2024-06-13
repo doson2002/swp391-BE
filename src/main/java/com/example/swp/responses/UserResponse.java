@@ -1,5 +1,7 @@
 package com.example.swp.responses;
 
+import com.example.swp.entities.Counters;
+import com.example.swp.entities.Role;
 import com.example.swp.entities.Users;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
@@ -21,10 +23,12 @@ public class UserResponse extends BaseResponse{
     private String dateOfBirth;
     @JsonProperty("active")
     private boolean active;
-    @JsonProperty("role_id")
-    private String role;
-    @JsonProperty("counter_id")
-    private String counter;
+    @JsonProperty("first_login")
+    private Boolean firstLogin;
+    @JsonProperty("role")
+    private Role role;
+    @JsonProperty("counter")
+    private Counters counter;
 
     public static UserResponse fromUser(Users user) {
         UserResponse userResponse = UserResponse.builder()
@@ -34,8 +38,9 @@ public class UserResponse extends BaseResponse{
                 .phoneNumber(user.getPhoneNumber())
                 .dateOfBirth(user.getDateOfBirth())
                 .active(user.isActive())
-                .role(user.getRole().getName())
-                .counter(user.getCounter() != null ? user.getCounter().getLocation() : null)
+                .firstLogin(user.getFirstLogin())
+                .role(user.getRole())
+                .counter(user.getCounter() != null ? user.getCounter() : null)
                 .build();
         userResponse.setCreatedDate(user.getCreatedDate());
         userResponse.setModifiedDate(user.getModifiedDate());

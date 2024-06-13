@@ -13,6 +13,7 @@ import com.example.swp.responses.UserListResponse;
 import com.example.swp.responses.UserResponse;
 import com.example.swp.services.ITokenService;
 import com.example.swp.services.IUserService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -72,6 +73,7 @@ public class UserController {
                     .refreshToken(jwtToken.getRefreshToken())
                     .name(userDetail.getFullName())
                     .email(userDetail.getUsername())
+                            .firstLogin(userDetail.getFirstLogin())
                     .roles(userDetail.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList())
                     .id(userDetail.getId())
                     .build());
@@ -132,18 +134,51 @@ public class UserController {
                 .build());
     }
     @GetMapping("/get_user_by_id/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
     public ResponseEntity<?> getUserById(@Valid @PathVariable Long id) throws DataNotFoundException {
         Users user =userService.getUser(id);
         return ResponseEntity.ok(UserResponse.fromUser(user));
     }
 
-    @DeleteMapping("/delete_user/{userId}")
-    public ResponseEntity<String> deleteUser(@PathVariable long userId) {
+    @GetMapping("/get_user_by_role_and_counter")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    public ResponseEntity<?>getUsersByRoleAndCounter(
+            @RequestParam(defaultValue = "") Long roleId,
+            @RequestParam(required = false) Long counterId) throws DataNotFoundException {
+        List<Users> users =userService.getUserByRoleAndCounter(roleId, counterId);
+        return ResponseEntity.ok(users);
+    }
+
+
+    @PutMapping("/update/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    public ResponseEntity<?> updateUser(@PathVariable long id, @RequestBody UserDTO userDTO) {
         try {
-            userService.deleteSyllabus(userId);
-            return new ResponseEntity<>("Users deleted successfully", HttpStatus.OK);
+            userService.updateUser(id, userDTO);
+            return ResponseEntity.ok("Update User successfully");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @DeleteMapping("/delete_user/{userId}")
+    public ResponseEntity<String> deleteUser(@PathVariable Long userId) {
+        userService.deleteUser(userId);
+        return new ResponseEntity<>("Users deleted successfully", HttpStatus.OK);
+    }
+    @PutMapping("/block/{userId}/{active}")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public ResponseEntity<String> blockOrEnable(
+            @Valid @PathVariable long userId,
+            @Valid @PathVariable int active
+    ) {
+        try {
+            userService.blockOrEnable(userId, active > 0);
+            String message = active > 0 ? "Successfully enabled the user." : "Successfully blocked the user.";
+            return ResponseEntity.ok().body(message);
         } catch (DataNotFoundException e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_FOUND);
+            return ResponseEntity.badRequest().body("User not found.");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 

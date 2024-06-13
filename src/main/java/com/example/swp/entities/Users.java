@@ -1,6 +1,5 @@
 package com.example.swp.entities;
 
-import jakarta.annotation.Nullable;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -50,6 +49,9 @@ public class Users extends BaseEntity implements UserDetails {
     @ManyToOne
     @JoinColumn(name = "counter_id", nullable = true)
     private Counters counter;
+
+    @OneToOne(mappedBy = "user")
+    private ForgotPassword forgotPassword;
 
     @ManyToOne
     @JoinColumn(name = "role_id")

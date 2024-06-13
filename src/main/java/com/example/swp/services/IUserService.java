@@ -8,6 +8,8 @@ import com.example.swp.responses.UserResponse;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 
+import java.util.List;
+
 public interface IUserService {
     Users createUser(UserDTO userDTO) throws Exception;
 
@@ -15,7 +17,9 @@ public interface IUserService {
 
     Users getUser(Long id) throws DataNotFoundException;
 
-    Users deleteSyllabus(long userId) throws DataNotFoundException;
+    List<Users> getUserByRoleAndCounter(Long roleId, Long counterId) throws DataNotFoundException;
+
+    void deleteUser(Long userId);
 
     String login(String userAccount, String password,Long roleId) throws Exception;
 
@@ -25,4 +29,9 @@ public interface IUserService {
     String generateRandomPassword(int minLen, int maxLen);
 
     Users getUserDetailsFromToken(String token) throws Exception;
+    void blockOrEnable(Long userId, Boolean active) throws DataNotFoundException;
+
+    Users updateUser(long id, UserDTO userDTO) throws Exception;
+
+    void updatePassword(String email, String password) throws DataNotFoundException;
 }

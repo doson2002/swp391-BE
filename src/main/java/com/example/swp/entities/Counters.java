@@ -15,9 +15,8 @@ public class Counters {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-
     private String location;
-
-    @JsonProperty(value = "counter_name")
+    @Column(name = "counter_name")
     private String counterName;
+    private Boolean status;
 }

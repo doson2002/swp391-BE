@@ -25,12 +25,17 @@ public class ProductResponse {
     private double priceStone;
     @JsonProperty(value = "weight")
     private double weight;
+    @JsonProperty(value = "weight_unit")
+    private String weightUnit;
     @JsonProperty(value = "description")
     private String description;
     @JsonProperty(value = "type")
     private TypePrices type;
+    @JsonProperty(value = "image_url")
+    private String imageUrl;
     @JsonProperty(value = "counter_id")
     private Counters counter;
+
 
     public static ProductResponse fromProducts(Products products) {
         ProductResponse productResponse = ProductResponse.builder()
@@ -41,7 +46,9 @@ public class ProductResponse {
                 .priceProcessing(products.getPriceProcessing())
                 .priceStone(products.getPriceStone())
                 .weight(products.getWeight())
+                .weightUnit(products.getWeightUnit())
                 .description(products.getDescription())
+                .imageUrl(products.getImageUrl())
                 .type(products.getType())
                 .counter(products.getCounter())
                 .build();
