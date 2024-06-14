@@ -3,6 +3,7 @@ package com.example.swp.services;
 import com.example.swp.dtos.CustomersDTO;
 import com.example.swp.entities.Customers;
 import com.example.swp.exceptions.DataNotFoundException;
+import com.example.swp.exceptions.DuplicateDataException;
 import com.example.swp.repositories.CustomerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,11 +17,6 @@ import java.util.stream.Collectors;
 public class CustomerService implements ICustomerService {
 
     private final CustomerRepository customerRepository;
-
-    @Override
-    public List<Customers> getAllCustomers() {
-        return customerRepository.findAll();
-    }
 
     @Override
     public Customers addCustomer(CustomersDTO customersDTO) throws DuplicateDataException {
