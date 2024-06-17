@@ -18,31 +18,31 @@ public class TypePriceController {
 
     private final TypePriceService typePriceService;
 
-    @GetMapping("/typeprices")
+    @GetMapping("/get_all_type_prices")
     public List<TypePrices> getAllTypePrices() {
         return typePriceService.getAllTypePrices();
     }
 
-    @GetMapping("/typeprices/{id}")
+    @GetMapping("/get_by_id/{id}")
     public ResponseEntity<TypePrices> getTypePriceById(@PathVariable(value = "id") Long id) throws DataNotFoundException {
         TypePrices typePrices = typePriceService.getTypePriceById(id)
                 .orElseThrow(() -> new DataNotFoundException("TypePrices not found for this id :: " + id));
         return ResponseEntity.ok().body(typePrices);
     }
 
-    @PostMapping("/typeprices")
+    @PostMapping("/create_type_prices")
     public TypePrices createTypePrice(@RequestBody TypePrices typePrices) {
         return typePriceService.saveTypePrice(typePrices);
     }
 
-    @PutMapping("/typeprices/{id}")
+    @PutMapping("/update_type_prices/{id}")
     public ResponseEntity<TypePrices> updateTypePrice(@PathVariable(value = "id") Long id,
                                                       @RequestBody TypePrices typePricesDetails) throws DataNotFoundException {
         TypePrices updatedTypePrices = typePriceService.updateTypePrice(id, typePricesDetails);
         return ResponseEntity.ok(updatedTypePrices);
     }
 
-    @DeleteMapping("/typeprices/{id}")
+    @DeleteMapping("/delete_type_prices/{id}")
     public Map<String, Boolean> deleteTypePrice(@PathVariable(value = "id") Long id) throws DataNotFoundException {
         typePriceService.deleteTypePrice(id);
         Map<String, Boolean> response = new HashMap<>();
