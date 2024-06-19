@@ -18,4 +18,5 @@ public interface ICustomerService {
 
     void deleteCustomer(Long id) throws DataNotFoundException;
 
+    void applyAccumulatedPoint(Long customerId, double accumulatedPoint) throws Exception;
 }

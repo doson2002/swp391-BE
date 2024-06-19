@@ -32,6 +32,7 @@ public class CustomerController {
     }
 
     @GetMapping("/get_customers")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF','ROLE_MANAGER')")
     public ResponseEntity<?> getCustomers(@RequestParam(required = false) String keyword) {
         try{
             List<Customers> customers = customerService.getCustomers(keyword);
@@ -44,6 +45,7 @@ public class CustomerController {
 
 
     @GetMapping("/get_customer_by_phone")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF','ROLE_MANAGER')")
     public  ResponseEntity<?> getCustomerByPhone(@RequestParam String phone) throws DataNotFoundException {
         try{
             Customers customer = customerService.getCustomerByPhone(phone);
@@ -55,6 +57,7 @@ public class CustomerController {
 
 
     @PutMapping("/update/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF','ROLE_MANAGER')")
     public ResponseEntity<?> updateCustomer(@Valid @PathVariable Long id, @RequestBody CustomersDTO customerDTO) throws DataNotFoundException {
         try{
             Customers updatedCustomer = customerService.updateCustomer(id, customerDTO);
@@ -65,6 +68,7 @@ public class CustomerController {
     }
 
     @DeleteMapping("/delete/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF','ROLE_MANAGER')")
     public ResponseEntity<Void> deleteCustomer(@PathVariable Long id) throws DataNotFoundException {
         customerService.deleteCustomer(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
@@ -72,6 +76,16 @@ public class CustomerController {
 
 
 
+    @PutMapping("/apply_accumulated_point/{customerId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF','ROLE_MANAGER')")
+    public ResponseEntity<?> applyAccumulatedPoint(@Valid @PathVariable Long customerId, @RequestParam("accumulated_point") double accumulatedPoint) throws Exception {
+        try{
+             customerService.applyAccumulatedPoint(customerId, accumulatedPoint);
+            return ResponseEntity.ok("Applied accumulated point successfully");
+        }catch (Exception e){
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
 
 
 }

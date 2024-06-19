@@ -76,4 +76,17 @@ public class CustomerService implements ICustomerService {
         }
     }
 
+    @Override
+    public void applyAccumulatedPoint(Long customerId, double accumulatedPoint) throws Exception {
+        Customers existingCustomer = customerRepository.findById(customerId)
+                .orElseThrow(()-> new Exception("Customer with id :" +customerId +"not found"));
+        if(accumulatedPoint <= existingCustomer.getAccumulated_point()){
+            double newAccumulatedPoint = existingCustomer.getAccumulated_point() - accumulatedPoint;
+            existingCustomer.setAccumulated_point(newAccumulatedPoint);
+        }else {
+            throw new Exception("Accumulated point must be lower than current accumulated point");
+        }
+        customerRepository.save(existingCustomer);
+    }
+
 }
