@@ -49,7 +49,7 @@ public class OrderController {
 //        }
 //    }
 @PostMapping("/create")
-@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF')")
+@PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF','ROLE_MANAGER')")
 public ResponseEntity<?> createOrder(@Valid @RequestBody OrderRequestDetailDTO request,
                                           BindingResult result) {
 
@@ -74,7 +74,7 @@ public ResponseEntity<?> createOrder(@Valid @RequestBody OrderRequestDetailDTO r
 }
 
     @GetMapping("/get_all_orders")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF','ROLE_MANAGER')")
     public ResponseEntity<OrderListResponse> getAllOrders() {
 
       List<Orders> orders = orderService.getAllOrders();
@@ -96,7 +96,7 @@ public ResponseEntity<?> createOrder(@Valid @RequestBody OrderRequestDetailDTO r
     }
 
     @GetMapping("/get_order_by_userId/{userId}")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER')")
     public ResponseEntity<OrderListResponse> getAllOrders(@Valid @PathVariable Long userId) {
 
         List<Orders> orders = orderService.getOrdersByUserId(userId);
