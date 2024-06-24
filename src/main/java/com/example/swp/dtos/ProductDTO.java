@@ -14,7 +14,7 @@ public class ProductDTO {
     @JsonProperty(value = "barcode")
     private String barcode;
     @JsonProperty(value = "quantity")
-    private Long quantity;
+    private int quantity;
     @JsonProperty(value = "price_processing")
     private double priceProcessing;
     @JsonProperty(value = "price_stone")

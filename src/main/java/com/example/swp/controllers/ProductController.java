@@ -13,13 +13,17 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestController
@@ -28,6 +32,47 @@ import java.util.stream.Collectors;
 public class ProductController {
     private final IProductService productService;
 
+
+    @PostMapping(value = "/upload_products_data", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER')")
+    public ResponseEntity<?> uploadProductsData(@RequestPart("file") MultipartFile file){
+
+        // Kiểm tra giá trị của tham số duplicateHandle và thực hiện các hành động tương ứng
+        String message = null;
+        String errorMessage = null;
+        List<String> uniqueBarcodes = null;
+        List<String> duplicateBarcodes = null;
+        try {
+
+            Map<String, Object> result = productService.saveProductsToDatabase(file);
+            // Lấy thông báo thành công và uniqueCodes từ kết quả
+            message = (String) result.get("message");
+            uniqueBarcodes = (List<String>) result.get("uniqueBarcodes");
+            errorMessage = (String) result.get("errorMessage");
+            duplicateBarcodes = (List<String>) result.get("duplicateBarcodes");
+
+            // Trả về kết quả thành công cùng với thông báo
+            Map<String, Object> responseMap = new HashMap<>();
+
+            if (uniqueBarcodes != null) {
+                String uniqueCodesMessage = message + ": " + String.join(", ", uniqueBarcodes);
+                responseMap.put("Message", "Products data uploaded and saved successfully");
+                responseMap.put("UniqueCodesMessage", uniqueCodesMessage);
+            }
+            if (duplicateBarcodes != null) {
+                String duplicateCodesMessage = errorMessage + ": " + String.join(", ", duplicateBarcodes);
+                responseMap.put("DuplicateCodesMessage", duplicateCodesMessage);
+            }
+            return ResponseEntity.ok(responseMap);
+            // In ra thông báo thành công
+//                return ResponseEntity.ok(Map.of("Message","Syllabuses data uploaded and saved successfully "));
+        } catch (DataNotFoundException e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+
+        }
+        // In ra thông báo thành công
+
+    }
     @PostMapping("/create")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER')")
     public ResponseEntity<?> createProduct(

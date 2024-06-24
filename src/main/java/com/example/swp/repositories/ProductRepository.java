@@ -19,4 +19,6 @@ public interface ProductRepository extends JpaRepository<Products,Long> {
     List<Products> findByCounterId(Long counterId);
 
     void deleteByCounterId(Long counterId);
+
+    boolean existsByBarcode(String barcode);
 }
