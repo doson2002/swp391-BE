@@ -21,7 +21,7 @@ public class Products {
     @Column(name = "barcode")
     private String barcode;
     @Column(name = "quantity")
-    private Long quantity;
+    private int quantity;
     @Column(name = "price_processing")
     private double priceProcessing;
     @Column(name = "price_stone")

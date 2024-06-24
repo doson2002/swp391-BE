@@ -105,7 +105,13 @@
 			<version>0.11.5</version>
 			<scope>runtime</scope>
 		</dependency>
-	</dependencies>
+		<!-- Lib for import file -->
+        <dependency>
+            <groupId>org.apache.poi</groupId>
+            <artifactId>poi-ooxml</artifactId>
+            <version>5.1.0</version>
+        </dependency>
+    </dependencies>
 
 
 	<build>
