@@ -26,7 +26,7 @@ public class CustomerPolicyController {
     private final ICustomerPolicyService customerPolicyService;
 
     @PostMapping("/add_new_customer_policy")
-    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER','ROLE_STAFF')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER','ROLE_STAFF')")
     public ResponseEntity<?> createCustomerPolicy(
             @Valid @RequestBody CustomerPolicyDTO customerPolicyDTO,
             BindingResult result){
@@ -46,7 +46,7 @@ public class CustomerPolicyController {
         }
     }
     @PutMapping("/approve_customer_policy/{id}")
-    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER','ROLE_STAFF')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER','ROLE_STAFF')")
     public ResponseEntity<?> updatePublishStatusCustomerPolicy(@Valid @PathVariable Long id,
                                                    @RequestBody CustomerPolicyApplicationDTO customerPolicyApplicationDTO){
         try{
@@ -59,7 +59,7 @@ public class CustomerPolicyController {
     }
 
     @PutMapping("/update_customer_policy/{id}")
-    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER','ROLE_STAFF')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER','ROLE_STAFF')")
     public ResponseEntity<?> updateCustomerPolicy(@Valid @PathVariable Long id,
                                                   @RequestBody CustomerPolicyDTO customerPolicyDTO){
         try{
@@ -72,12 +72,19 @@ public class CustomerPolicyController {
     }
 
     @GetMapping("/get_policy_by_customer_and_status")
-    @PreAuthorize("hasAnyAuthority('ROLE_MANAGER','ROLE_STAFF')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER','ROLE_STAFF')")
     public ResponseEntity<?>getPolicyByCustomerAndStatus(
             @RequestParam(required = false, defaultValue = "") Long customerId,
             @RequestParam(required = false, defaultValue = "") String publishStatus) throws DataNotFoundException {
         List<CustomerPolicies> customerPolicies =
                 customerPolicyService.getAllPoliciesByCustomerIdAndStatus(customerId, publishStatus);
+        return ResponseEntity.ok(customerPolicies);
+    }
+    @GetMapping("/get_all_customer_policies")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER','ROLE_STAFF')")
+    public ResponseEntity<?>getAllCustomerPolicies() {
+        List<CustomerPolicies> customerPolicies =
+                customerPolicyService.getAllCustomerPolicies();
         return ResponseEntity.ok(customerPolicies);
     }
 
