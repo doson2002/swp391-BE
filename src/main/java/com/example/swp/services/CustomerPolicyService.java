@@ -94,4 +94,9 @@ public class CustomerPolicyService implements ICustomerPolicyService{
 
         return customerPolicyRepository.findByCustomerIdAndPublishingStatus(customerId, publishStatus);
     }
+
+    @Override
+    public List<CustomerPolicies> getAllCustomerPolicies() {
+        return customerPolicyRepository.findAll();
+    }
 }

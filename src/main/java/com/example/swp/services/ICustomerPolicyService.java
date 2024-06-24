@@ -18,4 +18,6 @@ public interface ICustomerPolicyService {
             throws DataNotFoundException;
     List<CustomerPolicies> getAllPoliciesByCustomerIdAndStatus(Long customerId, String publishStatus)
             throws DataNotFoundException;
+
+    List<CustomerPolicies> getAllCustomerPolicies();
 }
