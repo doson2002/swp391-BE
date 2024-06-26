@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.security.SecureRandom;
 import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -39,9 +40,9 @@ public class PromotionsService implements IPromotionsService{
 
     @Override
     public void deleteExpiredPromotions() throws Exception {
-        Long now = Instant.now().getEpochSecond();
+        Date now = new Date();
         List<Promotions> promotionsToDelete = promotionsRepository.findAll().stream()
-                .filter(promotion -> promotion.getEndDate() < now || promotion.isUsed())
+                .filter(promotion -> promotion.getEndDate().before(now) || promotion.isUsed())
                 .collect(Collectors.toList());
         if (promotionsToDelete.isEmpty()) {
             throw new Exception("No expired or used promotions to delete.");
