@@ -5,6 +5,8 @@ import jakarta.persistence.*;
 import jakarta.validation.Valid;
 import lombok.*;
 
+import java.util.Date;
+
 @Entity
 @Builder
 @Table(name = "promotions")
@@ -29,10 +31,10 @@ public class Promotions {
     private Long fixedDiscountAmount;
 
     @Column(name = "start_date")
-    private Long startDate;
+    private Date startDate;
 
     @Column(name = "end_date")
-    private Long endDate;
+    private Date endDate;
 
     @Column(name = "is_used")
     private boolean isUsed;

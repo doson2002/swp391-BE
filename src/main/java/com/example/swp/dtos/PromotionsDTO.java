@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Date;
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
@@ -14,8 +16,8 @@ public class PromotionsDTO {
     @JsonProperty(value = "fixed_discount_amount")
     private Long fixedDiscountAmount;
     @JsonProperty("start_date")
-    private Long startDate;
+    private Date startDate;
     @JsonProperty("end_date")
-    private Long endDate;
+    private Date endDate;
 
 }
