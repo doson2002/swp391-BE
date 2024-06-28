@@ -53,8 +53,7 @@ public class PromotionsService implements IPromotionsService{
 
     @Override
     public Promotions usePromotion(String code) throws Exception {
-        Promotions promotion = promotionsRepository.findById(code)
-                .orElseThrow(() -> new DataNotFoundException("Promotion not found with code: " + code));
+        Promotions promotion = promotionsRepository.findByCode(code);
         if (promotion.isUsed()) {
             throw new Exception("Promotion code has already been used.");
         }
