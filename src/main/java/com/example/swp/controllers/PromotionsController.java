@@ -40,12 +40,12 @@ public class PromotionsController {
 
     @PostMapping("/use/{code}")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER','ROLE_MANAGER')")
-    public ResponseEntity<Promotions> usePromotion(@PathVariable String code) {
+    public ResponseEntity<?> usePromotion(@PathVariable String code) {
         try {
             Promotions promotion = promotionsService.usePromotion(code);
             return ResponseEntity.ok(promotion);
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(null);
+            return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
 }
