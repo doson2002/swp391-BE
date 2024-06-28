@@ -35,6 +35,7 @@ public class PromotionsService implements IPromotionsService{
     @Override
 
     public List<Promotions> getAllPromotions() {
+
         return promotionsRepository.findAll();
     }
 

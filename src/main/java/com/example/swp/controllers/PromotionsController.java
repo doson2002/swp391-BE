@@ -27,8 +27,9 @@ public class PromotionsController {
 
     @GetMapping("/get_all_promotions")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER','ROLE_MANAGER')")
-    public List<Promotions> getAllPromotions() {
-        return promotionsService.getAllPromotions();
+    public ResponseEntity<?> getAllPromotions() {
+        List<Promotions> promotions = promotionsService.getAllPromotions();
+        return ResponseEntity.ok(promotions);
     }
 
     @DeleteMapping("/delete")
