@@ -18,7 +18,7 @@ public class PromotionsController {
     private final IPromotionsService promotionsService;
 
     @PostMapping("/create")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER','ROLE_MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER')")
     public ResponseEntity<Promotions> createPromotions(@RequestBody PromotionsDTO promotionsDTO) {
         Promotions promotion = promotionsService.createPromotion(promotionsDTO);
         return ResponseEntity.ok(promotion);
@@ -26,21 +26,21 @@ public class PromotionsController {
 
 
     @GetMapping("/get_all_promotions")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER','ROLE_MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER')")
     public ResponseEntity<?> getAllPromotions() {
         List<Promotions> promotions = promotionsService.getAllPromotions();
         return ResponseEntity.ok(promotions);
     }
 
     @DeleteMapping("/delete")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER','ROLE_MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER')")
     public ResponseEntity<Void> deleteExpiredPromotions() throws Exception {
         promotionsService.deleteExpiredPromotions();
         return ResponseEntity.noContent().build();
     }
 
     @PostMapping("/use/{code}")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER','ROLE_MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER')")
     public ResponseEntity<?> usePromotion(@PathVariable String code) {
         try {
             Promotions promotion = promotionsService.usePromotion(code);
