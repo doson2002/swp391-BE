@@ -1,16 +1,21 @@
 package com.example.swp.services;
 
 import com.example.swp.dtos.PromotionsDTO;
+import com.example.swp.entities.Orders;
 import com.example.swp.entities.Promotions;
+import com.example.swp.entities.Token;
+import com.example.swp.entities.Users;
 import com.example.swp.exceptions.DataNotFoundException;
 import com.example.swp.repositories.PromotionsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.security.SecureRandom;
 import java.time.Instant;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -50,6 +55,13 @@ public class PromotionsService implements IPromotionsService{
         }
         promotionsRepository.deleteAll(promotionsToDelete);
 
+    }
+
+    @Transactional
+    public void deletePromotionById(Long promotionId) throws DataNotFoundException {
+        Promotions promotions = promotionsRepository.findById(promotionId)
+                        .orElseThrow(()-> new DataNotFoundException("Cannot found promotion with id: "+ promotionId));
+        promotionsRepository.delete(promotions);
     }
 
     @Override

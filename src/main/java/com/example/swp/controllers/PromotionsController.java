@@ -2,6 +2,7 @@ package com.example.swp.controllers;
 
 import com.example.swp.dtos.PromotionsDTO;
 import com.example.swp.entities.Promotions;
+import com.example.swp.exceptions.DataNotFoundException;
 import com.example.swp.services.IPromotionsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -37,6 +38,17 @@ public class PromotionsController {
     public ResponseEntity<Void> deleteExpiredPromotions() throws Exception {
         promotionsService.deleteExpiredPromotions();
         return ResponseEntity.noContent().build();
+    }
+
+    @DeleteMapping("/delete/{promotionId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER','ROLE_MANAGER')")
+    public ResponseEntity<?> deletePromotionById(@PathVariable Long promotionId) throws DataNotFoundException {
+        try{
+            promotionsService.deletePromotionById(promotionId);
+            return ResponseEntity.ok("Delete successfully");
+        }catch (DataNotFoundException e){
+            return  ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 
     @PostMapping("/use/{code}")
