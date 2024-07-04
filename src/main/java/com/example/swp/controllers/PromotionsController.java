@@ -33,7 +33,7 @@ public class PromotionsController {
         return ResponseEntity.ok(promotions);
     }
 
-    @DeleteMapping("/delete")
+    @DeleteMapping("/delete_expired_promotions")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER','ROLE_MANAGER')")
     public ResponseEntity<Void> deleteExpiredPromotions() throws Exception {
         promotionsService.deleteExpiredPromotions();
