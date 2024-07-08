@@ -51,7 +51,7 @@ public class PromotionsController {
         }
     }
     @PostMapping("/get_promotion_by_code/{code}")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER','ROLE_MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF','ROLE_MANAGER')")
     public ResponseEntity<?> getPromotionByCode(@PathVariable String code) {
         try {
             Promotions promotion = promotionsService.getPromotionByCode(code);
