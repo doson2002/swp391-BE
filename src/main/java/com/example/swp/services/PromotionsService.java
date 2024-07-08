@@ -65,13 +65,8 @@ public class PromotionsService implements IPromotionsService{
     }
 
     @Override
-    public Promotions usePromotion(String code) throws Exception {
-        Promotions promotion = promotionsRepository.findByCode(code);
-        if (promotion.isUsed()) {
-            throw new Exception("Promotion code has already been used.");
-        }
-        promotion.setUsed(true);
-        return promotionsRepository.save(promotion);
+    public Promotions getPromotionByCode(String code) throws Exception {
+        return promotionsRepository.findByCode(code);
     }
 
     private String generateRandomCode(int length) {
