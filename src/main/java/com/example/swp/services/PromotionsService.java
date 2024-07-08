@@ -48,13 +48,12 @@ public class PromotionsService implements IPromotionsService{
     public void deleteExpiredPromotions() throws Exception {
         Date now = new Date();
         List<Promotions> promotionsToDelete = promotionsRepository.findAll().stream()
-                .filter(promotion -> promotion.getEndDate().before(now) || promotion.isUsed())
+                .filter(promotion -> promotion.getEndDate().before(now))
                 .collect(Collectors.toList());
         if (promotionsToDelete.isEmpty()) {
             throw new Exception("No expired or used promotions to delete.");
         }
         promotionsRepository.deleteAll(promotionsToDelete);
-
     }
 
     @Transactional

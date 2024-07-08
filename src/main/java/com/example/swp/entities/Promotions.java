@@ -36,6 +36,4 @@ public class Promotions {
     @Column(name = "end_date")
     private Date endDate;
 
-    @Column(name = "is_used")
-    private boolean isUsed;
 }
