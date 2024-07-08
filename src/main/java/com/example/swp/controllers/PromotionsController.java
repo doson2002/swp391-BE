@@ -50,7 +50,6 @@ public class PromotionsController {
             return  ResponseEntity.badRequest().body(e.getMessage());
         }
     }
-
     @PostMapping("/get_promotion_by_code/{code}")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER','ROLE_MANAGER')")
     public ResponseEntity<?> getPromotionByCode(@PathVariable String code) {
