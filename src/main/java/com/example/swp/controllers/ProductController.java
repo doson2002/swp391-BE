@@ -116,7 +116,7 @@ public class ProductController {
         }
     }
     @GetMapping("/get_all_products")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER','STAFF')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER','ROLE_STAFF')")
     public ResponseEntity<ProductListResponse> getAllProducts(
             @RequestParam(defaultValue = "")String keyword,
             @RequestParam("page") int page, @RequestParam("limit")int limit){
@@ -130,13 +130,13 @@ public class ProductController {
                 .build());
     }
     @GetMapping("/get_product_by_id/{productId}")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER','STAFF')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER','ROLE_STAFF')")
     public ResponseEntity<?> getProduct(@Valid @PathVariable Long productId) throws DataNotFoundException {
         Products product = productService.getProduct(productId);
         return ResponseEntity.ok(ProductResponse.fromProducts(product));
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER','ROLE_STAFF')")
     @GetMapping("/get_products_by_counter/{counterId}")
     public ResponseEntity<?> getProductsByCounterId(@PathVariable Long counterId) {
         List<Products> productsList = productService.getProductsByCounterId(counterId);
