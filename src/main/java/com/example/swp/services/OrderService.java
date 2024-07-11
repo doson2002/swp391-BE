@@ -5,6 +5,7 @@ import com.example.swp.dtos.OrderRequestDTO;
 import com.example.swp.entities.*;
 import com.example.swp.exceptions.DataNotFoundException;
 import com.example.swp.repositories.*;
+import com.example.swp.responses.OrderResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
@@ -105,6 +106,14 @@ public class OrderService implements IOrderService{
 
     public List<Orders> getOrdersByUserId(Long userId){
         return orderRepository.findByUser_Id(userId);
+    }
+
+    public OrderResponse getOrderResponse(Orders orders) {
+        List<OrderDetails> orderDetailsList = orderDetailRepository.findByOrderId(orders.getId());
+        return OrderResponse.fromOrders(orders, orderDetailsList);
+    }
+    public List<Orders> getOrdersByCounterId(Long counterId){
+        return orderRepository.findByCounter_Id(counterId);
     }
 
     @Transactional

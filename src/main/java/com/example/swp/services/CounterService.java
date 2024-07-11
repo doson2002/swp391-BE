@@ -63,15 +63,11 @@ public class CounterService implements ICounterService{
         Counters existingCounter = counterRepository.findById(counterId)
                 .orElseThrow(()->new DateTimeException("Counter not found with id: " +counterId));
         List<Products> existingProduct = productRepository.findByCounterId(counterId);
-        List<OrderDetails> existingOrderDetail = orderDetailRepository.findByCounterId(counterId);
         for (Products product : existingProduct) {
             product.setCounter(null);
             productRepository.save(product);
         }
-        for (OrderDetails orderDetail : existingOrderDetail) {
-            orderDetail.setCounter(null);
-            orderDetailRepository.save(orderDetail);
-        }
+
         existingCounter.setStatus(status);
         counterRepository.save(existingCounter);
     }
