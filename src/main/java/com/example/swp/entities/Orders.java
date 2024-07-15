@@ -33,6 +33,7 @@ public class Orders extends BaseEntity{
     @JoinColumn(name = "user_id")
     private Users user;
 
+
     @ManyToOne
     @JoinColumn(name = "counter_id")
     private Counters counter;
