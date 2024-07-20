@@ -29,5 +29,8 @@ public class OrderDetails {
     @JoinColumn(name = "product_id")
     private Products product;
 
+    @Column(name = "purchased_status")
+    private boolean purchasedStatus;
+
 
 }
