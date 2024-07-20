@@ -60,6 +60,7 @@ public class OrderService implements IOrderService{
         order.setDiscount(orderDTO.getDiscount());
         order.setType(orderDTO.getType());
         order.setPaymentMethod(orderDTO.getPaymentMethod());
+        order.setOrderStatus(order.getOrderStatus());
         order.setUser(user);
         order.setCreatedBy(user.getUsername()); // Assuming there is a getUsername method in Users class
         order.setCounter(counter);
@@ -192,6 +193,7 @@ public class OrderService implements IOrderService{
         existingOrder.setDate(orderDTO.getDate());
         existingOrder.setType(orderDTO.getType());
         existingOrder.setPaymentMethod(orderDTO.getPaymentMethod());
+        existingOrder.setOrderStatus(orderDTO.getOrderStatus());
         existingOrder.setCustomer(existingCustomer);
         existingOrder.setUser(existingOrder.getUser());
         orderRepository.save(existingOrder);

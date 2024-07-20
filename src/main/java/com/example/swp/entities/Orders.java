@@ -22,7 +22,10 @@ public class Orders extends BaseEntity{
     private double discount;
 
     @Column(name="payment_method")
-    private String paymentMethod;
+    private int paymentMethod;
+
+    @Column(name="order_status")
+    private int orderStatus;
 
     @Column(name = "created_by")
     private String createdBy;
