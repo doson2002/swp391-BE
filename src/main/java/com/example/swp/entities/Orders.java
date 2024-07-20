@@ -21,6 +21,9 @@ public class Orders extends BaseEntity{
     private Date date;
     private double discount;
 
+    @Column(name="payment_method")
+    private String paymentMethod;
+
     @Column(name = "created_by")
     private String createdBy;
     private String type;
