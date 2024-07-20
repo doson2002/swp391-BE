@@ -1,6 +1,7 @@
 package com.example.swp.dtos;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import jakarta.persistence.Column;
 import lombok.*;
 
 import java.util.Date;
@@ -18,6 +19,8 @@ public class OrderDTO {
     private double discount;
     @JsonProperty(value = "created_by")
     private String createdBy;
+    @JsonProperty(value="payment_method")
+    private String paymentMethod;
 
     @JsonProperty(value = "type")
     private String type;
