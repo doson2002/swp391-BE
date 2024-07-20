@@ -1,6 +1,8 @@
 package com.example.swp.services.momopayment;
 
 
+import com.example.swp.responses.PaymentResponse;
+import com.example.swp.responses.PaymentStatusResponse;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.apache.http.client.methods.CloseableHttpResponse;
@@ -38,7 +40,10 @@ public class MoMoPaymentService implements IMoMoPaymentService {
 
     @Value("${momo.notifyUrl}")
     private String notifyUrl;
-    public String createPaymentRequest(String orderId, long amount, String orderInfo) throws Exception {
+
+    @Value("${momo.queryStatusEndpoint}")
+    private String queryStatusEndpoint;
+    public PaymentResponse  createPaymentRequest(String orderId, long amount, String orderInfo) throws Exception {
         String requestId = UUID.randomUUID().toString();
         String requestType = "captureWallet";
         String extraData = "";
@@ -63,13 +68,42 @@ public class MoMoPaymentService implements IMoMoPaymentService {
         requestBody.put("lang", "vi");
         requestBody.put("signature", signature);
 
-        String responseContent = sendPostRequest(endpoint, requestBody);
-        Map<String, Object> responseMap = new ObjectMapper().readValue(responseContent, Map.class);
 
-        if (responseMap != null && responseMap.get("payUrl") != null) {
-            return responseMap.get("payUrl").toString();
-        } else {
-            throw new IllegalStateException("Failed to create payment request: " + responseContent);
+        try {
+            String responseContent = sendPostRequest(endpoint, requestBody);
+            Map<String, Object> responseMap = new ObjectMapper().readValue(responseContent, Map.class);
+
+            if (responseMap != null && responseMap.get("payUrl") != null) {
+                String payUrl = responseMap.get("payUrl").toString();
+                return new PaymentResponse(payUrl, requestBody, null);
+            } else {
+                return new PaymentResponse(null, requestBody, "Failed to create payment request: " + responseContent);
+            }
+        } catch (Exception e) {
+            return new PaymentResponse(null, requestBody, "Error: " + e.getMessage());
+        }
+    }
+
+    public PaymentStatusResponse checkPaymentStatus(String orderId, String requestId) throws Exception {
+        String rawHash = String.format("accessKey=%s&orderId=%s&partnerCode=%s&requestId=%s",
+                accessKey, orderId, partnerCode, requestId);
+
+        String signature = signSHA256(rawHash, secretKey);
+
+        Map<String, Object> requestBody = new HashMap<>();
+        requestBody.put("partnerCode", partnerCode);
+        requestBody.put("accessKey", accessKey);
+        requestBody.put("requestId", requestId);
+        requestBody.put("orderId", orderId);
+        requestBody.put("signature", signature);
+
+        try {
+            String responseContent = sendPostRequest(queryStatusEndpoint, requestBody);
+            Map<String, Object> responseMap = new ObjectMapper().readValue(responseContent, Map.class);
+
+            return new PaymentStatusResponse(responseMap);
+        } catch (Exception e) {
+            throw new Exception("Error checking payment status: " + e.getMessage());
         }
     }
 

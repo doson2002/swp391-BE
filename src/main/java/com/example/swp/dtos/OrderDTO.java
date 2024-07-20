@@ -25,4 +25,6 @@ public class OrderDTO {
     private Long customerId;
     @JsonProperty(value = "user_id")
     private Long userId;
+    @JsonProperty(value = "counter_id")
+    private Long counterId;
 }

@@ -25,6 +25,7 @@ public class OrderService implements IOrderService{
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final OrderDetailRepository orderDetailRepository;
+    private final CounterRepository counterRepository;
 //    public Orders createOrder(OrderDTO orderDTO) throws DataNotFoundException {
 //        Customers existingCustomer = customerRepository.findById(orderDTO.getCustomerId())
 //                .orElseThrow(()-> new DataNotFoundException("Cannot find customer with id"+ orderDTO.getCustomerId()));
@@ -47,6 +48,9 @@ public class OrderService implements IOrderService{
                 .orElseThrow(() -> new DataNotFoundException("Customer not found"));
         Users user = userRepository.findById(orderDTO.getUserId())
                 .orElseThrow(() -> new DataNotFoundException("User not found"));
+        Counters counter = counterRepository.findById(orderDTO.getCounterId())
+                .orElseThrow(() -> new DataNotFoundException("Counter not found"));
+
 
         boolean checkExistingOrder = orderRepository.existsByCustomer_Id(orderDTO.getCustomerId());
 
@@ -57,6 +61,7 @@ public class OrderService implements IOrderService{
         order.setType(orderDTO.getType());
         order.setUser(user);
         order.setCreatedBy(user.getUsername()); // Assuming there is a getUsername method in Users class
+        order.setCounter(counter);
 
 
 
@@ -71,7 +76,6 @@ public class OrderService implements IOrderService{
                     orderDetail.setProduct(product);
                     orderDetail.setQuantity(orderRequest.getQuantity());
                     orderDetail.setUnitPrice(orderRequest.getUnitPrice()); // Assuming there is a getPrice method in Products class
-
                     // Update the product stock
                     product.setQuantity(product.getQuantity() + orderRequest.getQuantity());
                     orderDetailRepository.save(orderDetail);
@@ -88,6 +92,7 @@ public class OrderService implements IOrderService{
                 orderDetail.setProduct(product);
                 orderDetail.setQuantity(orderRequest.getQuantity());
                 orderDetail.setUnitPrice(orderRequest.getUnitPrice()); // Assuming there is a getPrice method in Products class
+                orderDetail.setPurchasedStatus(true);
 
                 // Update the product stock
                 product.setQuantity(product.getQuantity() - orderRequest.getQuantity());
