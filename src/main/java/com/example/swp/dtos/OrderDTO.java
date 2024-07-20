@@ -20,7 +20,10 @@ public class OrderDTO {
     @JsonProperty(value = "created_by")
     private String createdBy;
     @JsonProperty(value="payment_method")
-    private String paymentMethod;
+    private int paymentMethod;
+
+    @JsonProperty(value="order_status")
+    private int orderStatus;
 
     @JsonProperty(value = "type")
     private String type;

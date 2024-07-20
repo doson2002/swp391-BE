@@ -18,13 +18,13 @@ public class DataInitializerConfig {
             initializeRole("Manager", roleRepository);
             initializeRole("Staff", roleRepository);
 
-            userRepository.findByEmail("admin@gmail.com").orElseGet(() -> {
+            userRepository.findByEmail("admin2@gmail.com").orElseGet(() -> {
                 Users adminUser = new Users();
                 Role adminRole = roleRepository.findByName("Admin").orElseThrow(() -> new RuntimeException("Role 'Admin' not found"));
-                adminUser.setEmail("admin@gmail.com");
-                adminUser.setPassword(passwordEncoder.encode("123")); // Consider using encoded passwords in production
+                adminUser.setEmail("admin2@gmail.com");
+                adminUser.setPassword(passwordEncoder.encode("123456")); // Consider using encoded passwords in production
                 adminUser.setActive(true);
-                adminUser.setFullName("admin");
+                adminUser.setFullName("admin 1");
                 adminUser.setPhoneNumber("aaaa");
                 adminUser.setFirstLogin(false);
                 adminUser.setCounter(null);
