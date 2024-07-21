@@ -94,7 +94,7 @@ public class OrderService implements IOrderService{
                 orderDetail.setProduct(product);
                 orderDetail.setQuantity(orderRequest.getQuantity());
                 orderDetail.setUnitPrice(orderRequest.getUnitPrice()); // Assuming there is a getPrice method in Products class
-                orderDetail.setPurchasedStatus(true);
+                orderDetail.setPurchasedStatus(1);
 
                 // Update the product stock
                 product.setQuantity(product.getQuantity() - orderRequest.getQuantity());
