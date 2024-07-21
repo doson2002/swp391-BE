@@ -30,7 +30,7 @@ public class OrderDetails {
     private Products product;
 
     @Column(name = "purchased_status")
-    private boolean purchasedStatus;
+    private int purchasedStatus;
 
 
 }
