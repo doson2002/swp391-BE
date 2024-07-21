@@ -7,10 +7,7 @@ import com.example.swp.entities.Products;
 import com.example.swp.exceptions.DataNotFoundException;
 import com.example.swp.repositories.OrderDetailRepository;
 import com.example.swp.repositories.OrderRepository;
-import com.example.swp.responses.OrderListResponse;
-import com.example.swp.responses.OrderResponse;
-import com.example.swp.responses.ProductListResponse;
-import com.example.swp.responses.ProductResponse;
+import com.example.swp.responses.*;
 import com.example.swp.services.IOrderService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -70,7 +67,8 @@ public ResponseEntity<?> createOrder(@Valid @RequestBody OrderRequestDetailDTO r
                 request.getOrderRequests(),
                 request.getOrderDTO()
         );
-        return ResponseEntity.ok("Create successfully");
+        CreateOrderResponse response = new CreateOrderResponse("Order Created successfully", order);
+        return ResponseEntity.ok(response);
     } catch (DataNotFoundException e) {
         return ResponseEntity.badRequest().body(e.getMessage());
     } catch (Exception e) {

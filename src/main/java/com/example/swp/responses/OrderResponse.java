@@ -23,6 +23,12 @@ public class OrderResponse {
     @JsonProperty(value = "created_by")
     private String createdBy;
     private String type;
+
+    @JsonProperty(value = "order_status")
+    private int orderStatus;
+
+    @JsonProperty(value = "payment_method")
+    private int paymentMethod;
     @JsonProperty(value = "customer")
     private Customers customer;
     @JsonProperty(value = "user_id")
@@ -38,6 +44,8 @@ public class OrderResponse {
                 .type(orders.getType())
                 .date(orders.getDate())
                 .customer(orders.getCustomer())
+                .orderStatus(orders.getOrderStatus())
+                .paymentMethod(orders.getPaymentMethod())
                 .userId(orders.getUser().getId())
                 .orderDetailsList(orderDetails)
                 .build();

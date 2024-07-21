@@ -28,7 +28,7 @@ public class OrderDetailController {
         return ResponseEntity.ok(orderDetailsList);
     }
     @PutMapping("/update_purchased_status/{orderDetailId}")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER','ROLE_STAFF')")
     public ResponseEntity<?> updatePurchasedStatus(@Valid @PathVariable Long orderDetailId,
                                                        @RequestBody int purchasedStatus){
         try {
