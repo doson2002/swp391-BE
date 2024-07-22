@@ -131,6 +131,12 @@ public class OrderService implements IOrderService{
         updateOrderDetailByOrderId(orderId, productsToAdd, productsToRemove);
     }
 
+    @Transactional
+    public void updateOrderStatus(long orderId,int orderStatus) throws DataNotFoundException {
+        Orders existingOrder = orderRepository.findById(orderId)
+                .orElseThrow(()-> new DataNotFoundException("order not found"));
+        existingOrder.setOrderStatus(orderStatus);
+    }
     private void updateOrderDetailByOrderId(Long orderId,
                                            List<OrderRequestDTO> productsToAdd,
                                            Map<Long, Integer> productsToRemove) throws DataNotFoundException {
