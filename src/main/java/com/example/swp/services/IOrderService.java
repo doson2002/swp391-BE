@@ -25,4 +25,5 @@ public interface IOrderService {
                                 List<OrderRequestDTO> productsToAdd,
                                 Map<Long, Integer> productsToRemove) throws DataNotFoundException ;
     void deleteOrder(Long orderId) throws DataNotFoundException;
+    void updateOrderStatus(long orderId,int orderStatus) throws DataNotFoundException;
 }

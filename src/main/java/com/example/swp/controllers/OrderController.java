@@ -148,6 +148,17 @@ public ResponseEntity<?> createOrder(@Valid @RequestBody OrderRequestDetailDTO r
         }
     }
 
+    @PutMapping("/update_order_status/{orderId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER','ROLE_STAFF')")
+    public ResponseEntity<?> updatePurchasedStatus(@Valid @PathVariable Long orderId,
+                                                   @RequestBody int orderStatus){
+        try {
+            orderService.updateOrderStatus(orderId, orderStatus);
+            return ResponseEntity.ok("order status updated successfully.");
+        } catch (DataNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 
     @DeleteMapping("/delete/{orderId}")
     @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
