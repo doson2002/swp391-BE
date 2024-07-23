@@ -23,6 +23,8 @@ public class ProductResponse {
     private double priceProcessing;
     @JsonProperty(value = "price_stone")
     private double priceStone;
+    @JsonProperty(value = "price_rate")
+    private double priceRate;
     @JsonProperty(value = "weight")
     private double weight;
     @JsonProperty(value = "weight_unit")
@@ -48,6 +50,7 @@ public class ProductResponse {
                 .weight(products.getWeight())
                 .weightUnit(products.getWeightUnit())
                 .description(products.getDescription())
+                .priceRate(products.getPriceRate())
                 .imageUrl(products.getImageUrl())
                 .type(products.getType())
                 .counter(products.getCounter())

@@ -15,7 +15,7 @@ import java.io.IOException;
 public class CorsFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Origin", "http://www.dodakat.com.s3-website-ap-southeast-1.amazonaws.com");
         response.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
         //3600s response trả về
         response.setHeader("Access-Control-Max-Age", "3600");

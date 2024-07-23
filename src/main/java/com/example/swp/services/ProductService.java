@@ -88,6 +88,7 @@ public class ProductService implements IProductService{
                 .barcode(productDTO.getBarcode())
                 .priceProcessing(productDTO.getPriceProcessing())
                 .priceStone(productDTO.getPriceStone())
+                .priceRate(productDTO.getPriceRate())
                 .weight(productDTO.getWeight())
                 .weightUnit(productDTO.getWeightUnit())
                 .quantity(productDTO.getQuantity())
@@ -113,6 +114,7 @@ public class ProductService implements IProductService{
             existingProduct.setBarcode(productDTO.getBarcode());
             existingProduct.setPriceProcessing(productDTO.getPriceProcessing());
             existingProduct.setPriceStone(productDTO.getPriceStone());
+            existingProduct.setPriceRate(productDTO.getPriceRate());
             existingProduct.setType(existingType);
             existingProduct.setWeight(productDTO.getWeight());
             existingProduct.setWeightUnit(productDTO.getWeightUnit());
