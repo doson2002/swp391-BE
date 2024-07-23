@@ -142,7 +142,7 @@ public class UserController {
     }
 
     @GetMapping("/get_user_by_role_and_counter")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER')")
     public ResponseEntity<?>getUsersByRoleAndCounter(
             @RequestParam(defaultValue = "") Long roleId,
             @RequestParam(required = false) Long counterId) throws DataNotFoundException {
