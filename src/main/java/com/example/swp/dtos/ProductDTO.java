@@ -19,6 +19,8 @@ public class ProductDTO {
     private double priceProcessing;
     @JsonProperty(value = "price_stone")
     private double priceStone;
+    @JsonProperty(value = "price_rate")
+    private double priceRate;
     @JsonProperty(value = "weight")
     private double weight;
     @JsonProperty(value = "weight_unit")
