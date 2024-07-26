@@ -25,4 +25,13 @@ public class OrderDetailService implements IOrderDetailService{
                 .orElseThrow(()-> new DataNotFoundException("order not found"));
         existingOrder.setPurchasedStatus(purchasedStatus);
     }
+
+    @Transactional
+    public void updatePurchasedQuantity(Long orderDetailId, int purchasedQuantity) throws DataNotFoundException {
+        OrderDetails existingOrderDetail = orderDetailRepository.findById(orderDetailId)
+                .orElseThrow(()->new DataNotFoundException("Order detail cannot find with id: "+ orderDetailId));
+        int newQuantity = existingOrderDetail.getPurchasedQuantity() + purchasedQuantity;
+        existingOrderDetail.setPurchasedQuantity(newQuantity);
+        orderDetailRepository.save(existingOrderDetail);
+    }
 }

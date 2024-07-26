@@ -32,5 +32,8 @@ public class OrderDetails {
     @Column(name = "purchased_status")
     private int purchasedStatus;
 
+    @Column(name = "purchased_quantity")
+    private int purchasedQuantity;
+
 
 }

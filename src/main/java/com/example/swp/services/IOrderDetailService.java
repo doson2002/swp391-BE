@@ -8,4 +8,5 @@ import java.util.List;
 public interface IOrderDetailService {
     List<OrderDetails> getOrderDetailsByOrderId(Long orderId);
     void updatePurchasedStatus(long orderDetailId,int purchasedStatus) throws DataNotFoundException;
+    void updatePurchasedQuantity(Long orderDetailId, int purchasedQuantity) throws DataNotFoundException;
 }

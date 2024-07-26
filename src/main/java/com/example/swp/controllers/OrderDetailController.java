@@ -38,4 +38,15 @@ public class OrderDetailController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+    @PutMapping("/update_purchased_quantity/{orderDetailId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER','ROLE_STAFF')")
+    public ResponseEntity<?> updatePurchasedQuantity(@Valid @PathVariable Long orderDetailId,
+                                                     @RequestBody int purchasedQuantity){
+        try {
+            orderDetailService.updatePurchasedQuantity(orderDetailId, purchasedQuantity);
+            return ResponseEntity.ok("purchased quantity updated successfully.");
+        } catch (DataNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
+        }
+    }
 }

@@ -17,4 +17,7 @@ public class OrderRequestDTO
 
     @JsonProperty("unit_price")
     private double unitPrice;
+
+    @JsonProperty(value = "purchased_Quantity")
+    private int purchasedQuantity;
 }
