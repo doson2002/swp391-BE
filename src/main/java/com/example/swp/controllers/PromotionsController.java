@@ -33,18 +33,28 @@ public class PromotionsController {
         return ResponseEntity.ok(promotions);
     }
 
-    @DeleteMapping("/delete")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER')")
+    @DeleteMapping("/delete_expired_promotions")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER','ROLE_MANAGER')")
     public ResponseEntity<Void> deleteExpiredPromotions() throws Exception {
         promotionsService.deleteExpiredPromotions();
         return ResponseEntity.noContent().build();
     }
 
-    @PostMapping("/use/{code}")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER')")
-    public ResponseEntity<?> usePromotion(@PathVariable String code) {
+    @DeleteMapping("/delete/{promotionId}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER','ROLE_MANAGER')")
+    public ResponseEntity<?> deletePromotionById(@PathVariable Long promotionId) throws DataNotFoundException {
+        try{
+            promotionsService.deletePromotionById(promotionId);
+            return ResponseEntity.ok("Delete successfully");
+        }catch (DataNotFoundException e){
+            return  ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+    @PostMapping("/get_promotion_by_code/{code}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF','ROLE_MANAGER')")
+    public ResponseEntity<?> getPromotionByCode(@PathVariable String code) {
         try {
-            Promotions promotion = promotionsService.usePromotion(code);
+            Promotions promotion = promotionsService.getPromotionByCode(code);
             return ResponseEntity.ok(promotion);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());

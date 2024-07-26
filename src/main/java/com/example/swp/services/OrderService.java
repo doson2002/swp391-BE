@@ -5,6 +5,7 @@ import com.example.swp.dtos.OrderRequestDTO;
 import com.example.swp.entities.*;
 import com.example.swp.exceptions.DataNotFoundException;
 import com.example.swp.repositories.*;
+import com.example.swp.responses.OrderResponse;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.annotation.Order;
@@ -24,6 +25,7 @@ public class OrderService implements IOrderService{
     private final UserRepository userRepository;
     private final ProductRepository productRepository;
     private final OrderDetailRepository orderDetailRepository;
+    private final CounterRepository counterRepository;
 //    public Orders createOrder(OrderDTO orderDTO) throws DataNotFoundException {
 //        Customers existingCustomer = customerRepository.findById(orderDTO.getCustomerId())
 //                .orElseThrow(()-> new DataNotFoundException("Cannot find customer with id"+ orderDTO.getCustomerId()));
@@ -46,6 +48,9 @@ public class OrderService implements IOrderService{
                 .orElseThrow(() -> new DataNotFoundException("Customer not found"));
         Users user = userRepository.findById(orderDTO.getUserId())
                 .orElseThrow(() -> new DataNotFoundException("User not found"));
+        Counters counter = counterRepository.findById(orderDTO.getCounterId())
+                .orElseThrow(() -> new DataNotFoundException("Counter not found"));
+
 
         boolean checkExistingOrder = orderRepository.existsByCustomer_Id(orderDTO.getCustomerId());
 
@@ -54,8 +59,11 @@ public class OrderService implements IOrderService{
         order.setCustomer(customer);
         order.setDiscount(orderDTO.getDiscount());
         order.setType(orderDTO.getType());
+        order.setPaymentMethod(orderDTO.getPaymentMethod());
+        order.setOrderStatus(order.getOrderStatus());
         order.setUser(user);
         order.setCreatedBy(user.getUsername()); // Assuming there is a getUsername method in Users class
+        order.setCounter(counter);
 
 
 
@@ -70,7 +78,6 @@ public class OrderService implements IOrderService{
                     orderDetail.setProduct(product);
                     orderDetail.setQuantity(orderRequest.getQuantity());
                     orderDetail.setUnitPrice(orderRequest.getUnitPrice()); // Assuming there is a getPrice method in Products class
-
                     // Update the product stock
                     product.setQuantity(product.getQuantity() + orderRequest.getQuantity());
                     orderDetailRepository.save(orderDetail);
@@ -87,6 +94,7 @@ public class OrderService implements IOrderService{
                 orderDetail.setProduct(product);
                 orderDetail.setQuantity(orderRequest.getQuantity());
                 orderDetail.setUnitPrice(orderRequest.getUnitPrice()); // Assuming there is a getPrice method in Products class
+                orderDetail.setPurchasedStatus(1);
 
                 // Update the product stock
                 product.setQuantity(product.getQuantity() - orderRequest.getQuantity());
@@ -107,6 +115,14 @@ public class OrderService implements IOrderService{
         return orderRepository.findByUser_Id(userId);
     }
 
+    public OrderResponse getOrderResponse(Orders orders) {
+        List<OrderDetails> orderDetailsList = orderDetailRepository.findByOrderId(orders.getId());
+        return OrderResponse.fromOrders(orders, orderDetailsList);
+    }
+    public List<Orders> getOrdersByCounterId(Long counterId){
+        return orderRepository.findByCounter_Id(counterId);
+    }
+
     @Transactional
     public void updateOrderOrderDetail(Long orderId, OrderDTO orderDTO,
                                        List<OrderRequestDTO> productsToAdd,
@@ -115,6 +131,12 @@ public class OrderService implements IOrderService{
         updateOrderDetailByOrderId(orderId, productsToAdd, productsToRemove);
     }
 
+    @Transactional
+    public void updateOrderStatus(long orderId,int orderStatus) throws DataNotFoundException {
+        Orders existingOrder = orderRepository.findById(orderId)
+                .orElseThrow(()-> new DataNotFoundException("order not found"));
+        existingOrder.setOrderStatus(orderStatus);
+    }
     private void updateOrderDetailByOrderId(Long orderId,
                                            List<OrderRequestDTO> productsToAdd,
                                            Map<Long, Integer> productsToRemove) throws DataNotFoundException {
@@ -176,10 +198,14 @@ public class OrderService implements IOrderService{
         existingOrder.setDiscount(orderDTO.getDiscount());
         existingOrder.setDate(orderDTO.getDate());
         existingOrder.setType(orderDTO.getType());
+        existingOrder.setPaymentMethod(orderDTO.getPaymentMethod());
+        existingOrder.setOrderStatus(orderDTO.getOrderStatus());
         existingOrder.setCustomer(existingCustomer);
         existingOrder.setUser(existingOrder.getUser());
         orderRepository.save(existingOrder);
     }
+
+
 
     @Transactional
     public void deleteOrder(Long orderId) throws DataNotFoundException {

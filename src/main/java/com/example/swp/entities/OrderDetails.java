@@ -29,7 +29,8 @@ public class OrderDetails {
     @JoinColumn(name = "product_id")
     private Products product;
 
-    @ManyToOne
-    @JoinColumn(name = "counter_id")
-    private Counters counter;
+    @Column(name = "purchased_status")
+    private int purchasedStatus;
+
+
 }

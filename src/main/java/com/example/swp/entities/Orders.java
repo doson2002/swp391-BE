@@ -21,6 +21,12 @@ public class Orders extends BaseEntity{
     private Date date;
     private double discount;
 
+    @Column(name="payment_method")
+    private int paymentMethod;
+
+    @Column(name="order_status")
+    private int orderStatus;
+
     @Column(name = "created_by")
     private String createdBy;
     private String type;
@@ -32,5 +38,10 @@ public class Orders extends BaseEntity{
     @ManyToOne
     @JoinColumn(name = "user_id")
     private Users user;
+
+
+    @ManyToOne
+    @JoinColumn(name = "counter_id")
+    private Counters counter;
 
 }

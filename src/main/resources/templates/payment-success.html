@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Payment Successful</title>
+</head>
+<body>
+<h1>Payment Successful</h1>
+<p>Thank you for your payment. Your order ID is <span id="orderId"></span>.</p>
+<script>
+  document.getElementById('orderId').innerText = new URLSearchParams(window.location.search).get('orderId');
+</script>
+</body>
+</html>

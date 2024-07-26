@@ -71,7 +71,7 @@ public class CounterController {
     }
 
     @GetMapping("/get_counter_by_name")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER')")
     public  ResponseEntity<?> getCounterByName(@RequestParam String name) throws DataNotFoundException {
         try{
             List<Counters> counterList = counterService.getCountersByName(name);
@@ -81,7 +81,7 @@ public class CounterController {
         }
     }
     @GetMapping("/get_all_counters")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER')")
     public ResponseEntity<?> getAllCounters() {
         try{
             List<Counters> countersList = counterService.getAllCounters();

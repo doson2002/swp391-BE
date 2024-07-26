@@ -73,9 +73,10 @@ public class UserController {
                     .refreshToken(jwtToken.getRefreshToken())
                     .name(userDetail.getFullName())
                     .email(userDetail.getUsername())
-                            .firstLogin(userDetail.getFirstLogin())
+                    .firstLogin(userDetail.getFirstLogin())
                     .roles(userDetail.getAuthorities().stream().map(GrantedAuthority::getAuthority).toList())
                     .id(userDetail.getId())
+                    .counter(userDetail.getCounter())
                     .build());
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(
@@ -141,7 +142,7 @@ public class UserController {
     }
 
     @GetMapping("/get_user_by_role_and_counter")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER')")
     public ResponseEntity<?>getUsersByRoleAndCounter(
             @RequestParam(defaultValue = "") Long roleId,
             @RequestParam(required = false) Long counterId) throws DataNotFoundException {

@@ -10,7 +10,6 @@ public interface IPromotionsService {
     Promotions createPromotion(PromotionsDTO promotionsDTO);
     List<Promotions> getAllPromotions();
     void deleteExpiredPromotions() throws Exception;
-    Promotions usePromotion(String code) throws Exception;
-    Promotions updatePromotion(Long id, Promotions updatedPromotion) throws DataNotFoundException;
-    void deletePromotion(Long id);
+    Promotions getPromotionByCode(String code) throws Exception;
+    void deletePromotionById(Long promotionId) throws DataNotFoundException;
 }

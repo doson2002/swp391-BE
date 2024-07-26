@@ -1,12 +1,14 @@
 package com.example.swp.responses;
 
 import com.example.swp.entities.Customers;
+import com.example.swp.entities.OrderDetails;
 import com.example.swp.entities.Orders;
 import com.example.swp.entities.Products;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,12 +23,20 @@ public class OrderResponse {
     @JsonProperty(value = "created_by")
     private String createdBy;
     private String type;
+
+    @JsonProperty(value = "order_status")
+    private int orderStatus;
+
+    @JsonProperty(value = "payment_method")
+    private int paymentMethod;
     @JsonProperty(value = "customer")
     private Customers customer;
     @JsonProperty(value = "user_id")
     private Long userId;
 
-    public static OrderResponse fromOrders(Orders orders) {
+    private List<OrderDetails> orderDetailsList;
+
+    public static OrderResponse fromOrders(Orders orders, List<OrderDetails> orderDetails) {
         OrderResponse orderResponse = OrderResponse.builder()
                 .id(orders.getId())
                 .createdBy(orders.getCreatedBy())
@@ -34,7 +44,10 @@ public class OrderResponse {
                 .type(orders.getType())
                 .date(orders.getDate())
                 .customer(orders.getCustomer())
+                .orderStatus(orders.getOrderStatus())
+                .paymentMethod(orders.getPaymentMethod())
                 .userId(orders.getUser().getId())
+                .orderDetailsList(orderDetails)
                 .build();
         return orderResponse;
     }

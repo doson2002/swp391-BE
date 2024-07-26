@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Payment Failed</title>
+</head>
+<body>
+<h1>Payment Failed</h1>
+<p>Sorry, there was an issue with your payment. Your order ID is <span id="orderId"></span>.</p>
+<script>
+    document.getElementById('orderId').innerText = new URLSearchParams(window.location.search).get('orderId');
+</script>
+</body>
+</html>

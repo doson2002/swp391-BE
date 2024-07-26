@@ -1,7 +1,10 @@
 package com.example.swp.services;
 
 import com.example.swp.entities.OrderDetails;
+import com.example.swp.entities.Orders;
+import com.example.swp.exceptions.DataNotFoundException;
 import com.example.swp.repositories.OrderDetailRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.aspectj.weaver.ast.Or;
 import org.springframework.stereotype.Repository;
@@ -16,4 +19,10 @@ public class OrderDetailService implements IOrderDetailService{
         public List<OrderDetails> getOrderDetailsByOrderId(Long orderId) {
             return orderDetailRepository.findByOrderId(orderId);
         }
+    @Transactional
+    public void updatePurchasedStatus(long orderDetailId,int purchasedStatus) throws DataNotFoundException {
+        OrderDetails existingOrder = orderDetailRepository.findById(orderDetailId)
+                .orElseThrow(()-> new DataNotFoundException("order not found"));
+        existingOrder.setPurchasedStatus(purchasedStatus);
+    }
 }

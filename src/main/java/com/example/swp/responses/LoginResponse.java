@@ -1,5 +1,6 @@
 package com.example.swp.responses;
 
+import com.example.swp.entities.Counters;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
@@ -28,4 +29,6 @@ public class LoginResponse {
     @JsonProperty("first_login")
     private boolean firstLogin;
     private List<String> roles;
+
+    private Counters counter;
 }
