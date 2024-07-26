@@ -61,17 +61,4 @@ public class PromotionsController {
         }
     }
 
-    @DeleteMapping("deleteById/{id}")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER')")
-    public  ResponseEntity<?> deletePromotion(@PathVariable Long id) {
-        promotionsService.deletePromotion(id);
-        return ResponseEntity.noContent().build();
-    }
-
-    @PutMapping("/update/{id}")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER')")
-    public ResponseEntity<?> updatePromotions(@RequestBody Promotions updatedPromotions, @PathVariable Long id) throws DataNotFoundException {
-        Promotions updatePromotion = promotionsService.updatePromotion(id, updatedPromotions);
-        return ResponseEntity.ok(updatePromotion);
-    }
 }

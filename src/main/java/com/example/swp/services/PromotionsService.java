@@ -68,27 +68,6 @@ public class PromotionsService implements IPromotionsService{
         return promotionsRepository.findByCode(code);
     }
 
-    @Override
-    public Promotions updatePromotion(Long id, Promotions updatedPromotion) throws DataNotFoundException {
-        Promotions existingPromotion = promotionsRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("Promotion with id " + id + " not found"));
-
-        existingPromotion.setCode(updatedPromotion.getCode());
-        existingPromotion.setDescription(updatedPromotion.getDescription());
-        existingPromotion.setDiscountPercentage(updatedPromotion.getDiscountPercentage());
-        existingPromotion.setFixedDiscountAmount(updatedPromotion.getFixedDiscountAmount());
-        existingPromotion.setStartDate(updatedPromotion.getStartDate());
-        existingPromotion.setEndDate(updatedPromotion.getEndDate());
-        existingPromotion.setUsed(updatedPromotion.isUsed());
-
-        return promotionsRepository.save(existingPromotion);
-    }
-
-
-    @Override
-    public void deletePromotion(Long id) {
-        promotionsRepository.deleteById(id);
-    }
 
     private String generateRandomCode(int length) {
         SecureRandom random = new SecureRandom();
