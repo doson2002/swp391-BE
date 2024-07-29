@@ -32,7 +32,7 @@ public class OrderDetails {
     @Column(name = "purchased_status")
     private int purchasedStatus;
 
-    @Column(name = "purchased_quantity")
+    @Column(name = "purchased_quantity", nullable = true)
     private int purchasedQuantity;
 
 
