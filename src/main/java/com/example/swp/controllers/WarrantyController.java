@@ -48,4 +48,15 @@ public class WarrantyController {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
     }
+
+    @GetMapping("/print/{id}")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER')")
+    public ResponseEntity<byte[]> printWarranty(@PathVariable Long id) throws IOException {
+        Warranty warranty = warrantyService.getWarrantyById(id);
+        ByteArrayInputStream bis = pdfGenerator.createPdf(warranty);
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("Content-Disposition", "inline; filename=warranty.pdf");
+        headers.setContentType(MediaType.APPLICATION_PDF);  // Thiết lập header Content-Type
+        return ResponseEntity.ok().headers(headers).body(bis.readAllBytes());
+    }
 }

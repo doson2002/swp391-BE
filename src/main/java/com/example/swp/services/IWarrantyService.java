@@ -6,4 +6,5 @@ import com.example.swp.exceptions.DataNotFoundException;
 
 public interface IWarrantyService {
     Warranty createWarranty(WarrantyDTO warrantyDTO) throws DataNotFoundException;
+    Warranty getWarrantyById(Long id);
 }

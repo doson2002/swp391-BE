@@ -30,5 +30,9 @@ public class WarrantyService implements IWarrantyService {
         return warrantyRepository.save(newWarranty);
     }
 
+    public Warranty getWarrantyById(Long id) {
+        return warrantyRepository.findById(id).orElse(null);
+    }
+
 
 }
