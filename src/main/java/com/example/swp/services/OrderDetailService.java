@@ -34,4 +34,9 @@ public class OrderDetailService implements IOrderDetailService{
         existingOrderDetail.setPurchasedQuantity(newQuantity);
         orderDetailRepository.save(existingOrderDetail);
     }
+
+    @Transactional
+    public List<OrderDetails> getReorderHistory() {
+        return orderDetailRepository.findByPurchasedStatus(1); // Assuming 1 means 'reordered'
+    }
 }

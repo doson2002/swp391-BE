@@ -49,4 +49,10 @@ public class OrderDetailController {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(e.getMessage());
         }
     }
+    @GetMapping("/reorder-history")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER','ROLE_STAFF')")
+    public ResponseEntity<List<OrderDetails>> getReorderHistory() {
+        List<OrderDetails> reorderHistory = orderDetailService.getReorderHistory();
+        return ResponseEntity.ok(reorderHistory);
+    }
 }
