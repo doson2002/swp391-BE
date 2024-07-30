@@ -3,6 +3,7 @@ package com.example.swp.controllers;
 import com.example.swp.components.PdfGenerator;
 import com.example.swp.dtos.ProductDTO;
 import com.example.swp.dtos.WarrantyDTO;
+import com.example.swp.entities.Orders;
 import com.example.swp.entities.Products;
 import com.example.swp.entities.Warranty;
 import com.example.swp.services.IWarrantyService;
@@ -58,5 +59,15 @@ public class WarrantyController {
         headers.add("Content-Disposition", "inline; filename=warranty.pdf");
         headers.setContentType(MediaType.APPLICATION_PDF);  // Thiết lập header Content-Type
         return ResponseEntity.ok().headers(headers).body(bis.readAllBytes());
+    }
+
+
+    @GetMapping("/warranties")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER')")
+    public ResponseEntity<List<Warranty>> getWarrantiesByOrder(@RequestParam Long orderId) {
+        Orders order = new Orders();
+        order.setId(orderId);
+        List<Warranty> warranties = warrantyService.getDetailsByOrder(order);
+        return ResponseEntity.ok(warranties);
     }
 }

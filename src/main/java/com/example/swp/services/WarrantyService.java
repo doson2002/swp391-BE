@@ -9,6 +9,8 @@ import com.example.swp.repositories.WarrantyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class WarrantyService implements IWarrantyService {
@@ -32,6 +34,11 @@ public class WarrantyService implements IWarrantyService {
 
     public Warranty getWarrantyById(Long id) {
         return warrantyRepository.findById(id).orElse(null);
+    }
+
+    @Override
+    public List<Warranty> getDetailsByOrder(Orders order) {
+        return warrantyRepository.findByOrder(order);
     }
 
 
