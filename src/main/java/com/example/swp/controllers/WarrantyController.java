@@ -30,7 +30,7 @@ public class WarrantyController {
     private final PdfGenerator pdfGenerator;
 
     @PostMapping("/create")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF','ROLE_MANAGER')")
     public ResponseEntity<?> createWarranty(
             @Valid @RequestBody WarrantyDTO warrantyDTO,
             BindingResult result) {
@@ -51,7 +51,7 @@ public class WarrantyController {
     }
 
     @GetMapping("/print/{id}")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF','ROLE_MANAGER')")
     public ResponseEntity<byte[]> printWarranty(@PathVariable Long id) throws IOException {
         Warranty warranty = warrantyService.getWarrantyById(id);
         ByteArrayInputStream bis = pdfGenerator.createPdf(warranty);
@@ -63,7 +63,7 @@ public class WarrantyController {
 
 
     @GetMapping("/warranties")
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_MANAGER')")
+    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN','ROLE_STAFF','ROLE_MANAGER')")
     public ResponseEntity<List<Warranty>> getWarrantiesByOrder(@RequestParam Long orderId) {
         Orders order = new Orders();
         order.setId(orderId);
